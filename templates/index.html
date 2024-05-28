@@ -15,10 +15,10 @@
             </div>
             <div class="card-body">
                 <!-- Upload Form -->
-                <form id="upload-form" method="post" action="/upload" enctype="multipart/form-data">
+                <form id="upload-form" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="file">ZIP-Datei oder Verzeichnis hochladen</label>
-                        <input type="file" class="form-control-file" id="file" name="file" webkitdirectory directory required>
+                        <input type="file" class="form-control-file" id="file" name="file" webkitdirectory directory multiple required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Hochladen</button>
                 </form>
@@ -100,6 +100,8 @@
             $('#upload-form').submit(function(event) {
                 event.preventDefault();
                 var formData = new FormData(this);
+                var files = $('#file')[0].files;
+
                 $('#upload-progress').show();
                 $.ajax({
                     xhr: function() {
@@ -113,7 +115,7 @@
                         return xhr;
                     },
                     type: 'POST',
-                    url: '/upload',
+                    url: '/upload_directory',
                     data: formData,
                     processData: false,
                     contentType: false,

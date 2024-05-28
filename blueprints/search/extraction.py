@@ -39,7 +39,7 @@ def extract_files_in_directory(directory, extract_to):
         extract_to (str): Das Verzeichnis, in das die Dateien extrahiert werden sollen.
 
     Returns:
-        bool: True, wenn die Extraktion erfolgreich war, False bei einem Fehler.
+        list: Eine Liste aller extrahierten TXT-Dateien.
     """
     try:
         current_app.logger.info(f"Starting extraction of all ZIP files in directory: {directory} to {extract_to}")
@@ -48,6 +48,7 @@ def extract_files_in_directory(directory, extract_to):
             os.makedirs(extract_to)
             current_app.logger.debug(f"Created extraction directory: {extract_to}")
 
+        all_txt_files = []
         for filename in os.listdir(directory):
             if filename.endswith('.zip'):
                 file_path = os.path.join(directory, filename)
@@ -56,6 +57,12 @@ def extract_files_in_directory(directory, extract_to):
                 with zipfile.ZipFile(file_path, 'r') as zip_file:
                     zip_file.extractall(extract_path)
                     current_app.logger.info(f"Successfully extracted ZIP file: {file_path} to {extract_path}")
+
+                # Sammeln der extrahierten TXT-Dateien
+                for root, _, files in os.walk(extract_path):
+                    for file in files:
+                        if file.endswith('.txt'):
+                            all_txt_files.append(os.path.join(root, file))
 
         # Analysiere die Struktur der extrahierten Dateien und speichere sie
         file_structure = analyze_structure(extract_to)
@@ -71,10 +78,10 @@ def extract_files_in_directory(directory, extract_to):
             json.dump(schema_info, f)
             current_app.logger.info(f"Schema information saved to: {schema_info_file_path}")
 
-        return True
+        return all_txt_files
     except Exception as e:
         current_app.logger.error(f"An unexpected error occurred while extracting files: {e}")
-        return False
+        return []
 
 def extract_single_zip(file_path, extract_to):
     """
@@ -86,7 +93,7 @@ def extract_single_zip(file_path, extract_to):
         extract_to (str): Das Verzeichnis, in das die Dateien extrahiert werden sollen.
 
     Returns:
-        bool: True, wenn die Extraktion erfolgreich war, False bei einem Fehler.
+        list: Eine Liste der extrahierten TXT-Dateien.
     """
     try:
         current_app.logger.info(f"Starting extraction of file: {file_path} to {extract_to}")
@@ -95,9 +102,16 @@ def extract_single_zip(file_path, extract_to):
             os.makedirs(extract_to)
             current_app.logger.debug(f"Created extraction directory: {extract_to}")
 
+        all_txt_files = []
         with zipfile.ZipFile(file_path, 'r') as zip_file:
             zip_file.extractall(extract_to)
             current_app.logger.info(f"Successfully extracted ZIP file: {file_path} to {extract_to}")
+
+            # Sammeln der extrahierten TXT-Dateien
+            for root, _, files in os.walk(extract_to):
+                for file in files:
+                    if file.endswith('.txt'):
+                        all_txt_files.append(os.path.join(root, file))
 
         # Analysiere die Struktur der extrahierten Dateien und speichere sie
         file_structure = analyze_structure(extract_to)
@@ -113,10 +127,10 @@ def extract_single_zip(file_path, extract_to):
             json.dump(schema_info, f)
             current_app.logger.info(f"Schema information saved to: {schema_info_file_path}")
 
-        return True
+        return all_txt_files
     except Exception as e:
         current_app.logger.error(f"An unexpected error occurred while extracting file: {e}")
-        return False
+        return []
 
 def analyze_structure(directory):
     """

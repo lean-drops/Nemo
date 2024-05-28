@@ -1,185 +1,88 @@
-Flask application starting...
-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-[33mPress CTRL+C to quit[0m
- * Restarting with stat
-Flask application starting...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-Flask application starting...
-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-[33mPress CTRL+C to quit[0m
- * Restarting with stat
-Flask application starting...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-Flask application starting...
-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-[33mPress CTRL+C to quit[0m
- * Restarting with stat
-Flask application starting...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-127.0.0.1 - - [28/May/2024 19:45:33] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:45:33] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-File saved to: uploads/test_siard.siard
-Successfully extracted SIARD file: uploads/test_siard.siard
-127.0.0.1 - - [28/May/2024 19:45:40] "POST /upload HTTP/1.1" 200 -
+Search query received: Louise
+Using default SIARD file at tests/test_siard.siard
+Extraction directory created: temp_extracted/test_siard
+Successfully extracted SIARD file: tests/test_siard.siard
+Starting search in directory: temp_extracted/test_siard with query: louise
+Found CSV files: ['temp_extracted/test_siard/address.csv', 'temp_extracted/test_siard/person.csv']
+Processing file: temp_extracted/test_siard/person.csv with query: louise
+Processing file: temp_extracted/test_siard/address.csv with query: louise
+First few rows of the dataframe:
+   ID                Name   Birthdate
+0   1      Michael Mclean  1938-01-21
+1   2       Allison Clark  1946-11-21
+2   3   Crystal Rodriguez  1996-03-17
+3   4  Elizabeth Schwartz  1967-02-07
+4   5       Joseph Holmes  1952-05-14
+First few rows of the dataframe:
+   ID             Name   Birthdate
+0   1     Rodney Payne  1954-10-19
+1   2     Laura Moreno  1998-08-12
+2   3      Jeremy Hall  1974-05-20
+3   4  Brandon Jackson  1990-02-16
+4   5   Mackenzie Pham  1934-01-08
+Total results found: 0
+No matches found for "Louise".
+Rendering template with results and feedback
+127.0.0.1 - - [28/May/2024 19:22:34] "POST / HTTP/1.1" 200 -
+127.0.0.1 - - [28/May/2024 19:22:34] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+Search query received: Matthew
+Using default SIARD file at tests/test_siard.siard
+Extraction directory created: temp_extracted/test_siard
+Successfully extracted SIARD file: tests/test_siard.siard
 Starting search in directory: temp_extracted/test_siard with query: matthew
 Found CSV files: ['temp_extracted/test_siard/address.csv', 'temp_extracted/test_siard/person.csv']
-Processing file: temp_extracted/test_siard/address.csv with query: matthew
 Processing file: temp_extracted/test_siard/person.csv with query: matthew
+Processing file: temp_extracted/test_siard/address.csv with query: matthew
 First few rows of the dataframe:
-   ID     Name   Birthdate
-0   1   Simone  1980-01-01
-1   2  Leandro  1985-05-12
-2   3   Sandro  1990-07-23
+   ID                Name   Birthdate
+0   1      Michael Mclean  1938-01-21
+1   2       Allison Clark  1946-11-21
+2   3   Crystal Rodriguez  1996-03-17
+3   4  Elizabeth Schwartz  1967-02-07
+4   5       Joseph Holmes  1952-05-14
 First few rows of the dataframe:
-   ID   Address    City
-0   1  Street 1  Zurich
-1   2  Street 2    Bern
-2   3  Street 3  Geneva
-Total results found: 0
-127.0.0.1 - - [28/May/2024 19:45:44] "POST /search HTTP/1.1" 200 -
-Flask application starting...
-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-[33mPress CTRL+C to quit[0m
- * Restarting with stat
-Flask application starting...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-127.0.0.1 - - [28/May/2024 19:46:51] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:46:51] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-Flask application starting...
-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-[33mPress CTRL+C to quit[0m
- * Restarting with stat
-Flask application starting...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-127.0.0.1 - - [28/May/2024 19:46:54] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:46:54] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-127.0.0.1 - - [28/May/2024 19:46:54] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:46:54] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-127.0.0.1 - - [28/May/2024 19:47:03] "[31m[1mPOST /upload HTTP/1.1[0m" 400 -
-127.0.0.1 - - [28/May/2024 19:47:05] "[31m[1mPOST /upload HTTP/1.1[0m" 400 -
-127.0.0.1 - - [28/May/2024 19:47:26] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:47:26] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-127.0.0.1 - - [28/May/2024 19:47:30] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:47:30] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-File saved to: uploads/test_siard.siard
-Successfully extracted SIARD file: uploads/test_siard.siard
-127.0.0.1 - - [28/May/2024 19:48:01] "POST /upload HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:48:11] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:48:11] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-127.0.0.1 - - [28/May/2024 19:48:16] "[31m[1mPOST /upload HTTP/1.1[0m" 400 -
- * Detected change in '/Users/python/Python Projekte/Staatsarchiv/Nemo/tests/test.py', reloading
- * Restarting with stat
-Flask application starting...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-127.0.0.1 - - [28/May/2024 19:51:00] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:51:00] "GET /static/css/style.css HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:51:47] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:51:47] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-Flask application starting...
-Browser will be opened shortly...
-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-[33mPress CTRL+C to quit[0m
- * Restarting with stat
-Flask application starting...
-Browser will be opened shortly...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-127.0.0.1 - - [28/May/2024 19:52:32] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:52:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-127.0.0.1 - - [28/May/2024 19:52:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-127.0.0.1 - - [28/May/2024 19:52:32] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:52:32] "GET /static/css/style.css HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:52:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-Flask application running...
-Flask application running...
-Flask application starting...
-Browser will be opened shortly...
-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-[33mPress CTRL+C to quit[0m
- * Restarting with stat
-Flask application starting...
-Browser will be opened shortly...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-127.0.0.1 - - [28/May/2024 19:53:00] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:53:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-127.0.0.1 - - [28/May/2024 19:53:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-127.0.0.1 - - [28/May/2024 19:53:01] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:53:01] "GET /static/css/style.css HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:53:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-File saved to: uploads/test_siard_20240528_195059.siard
-Successfully extracted SIARD file: uploads/test_siard_20240528_195059.siard
-127.0.0.1 - - [28/May/2024 19:53:06] "POST /upload HTTP/1.1" 200 -
-Starting search in directory: temp_extracted/test_siard with query: simone
-Found CSV files: ['temp_extracted/test_siard/address.csv', 'temp_extracted/test_siard/person.csv']
-Processing file: temp_extracted/test_siard/address.csv with query: simone
-Processing file: temp_extracted/test_siard/person.csv with query: simone
-First few rows of the dataframe:
-   ID   Address    City
-0   1  Street 1  Zurich
-1   2  Street 2    Bern
-2   3  Street 3  Geneva
-First few rows of the dataframe:
-   ID     Name   Birthdate
-0   1   Simone  1980-01-01
-1   2  Leandro  1985-05-12
-2   3   Sandro  1990-07-23
+   ID             Name   Birthdate
+0   1     Rodney Payne  1954-10-19
+1   2     Laura Moreno  1998-08-12
+2   3      Jeremy Hall  1974-05-20
+3   4  Brandon Jackson  1990-02-16
+4   5   Mackenzie Pham  1934-01-08
+Found matches in file: temp_extracted/test_siard/address.csv
+        ID               Name   Birthdate
+23      24      Matthew Munoz  1966-05-31
+85      86      Matthew Lewis  1975-06-06
+95      96     Matthew Bryant  1938-06-26
+241    242    Matthew Reed MD  2005-12-12
+460    461      Matthew Scott  1968-01-29
+...    ...                ...         ...
+9789  9790      Matthew Mason  1966-08-18
+9799  9800   Matthew Figueroa  1998-10-05
+9844  9845   Matthew Phillips  1983-11-24
+9951  9952    Matthew Burnett  1942-08-04
+9981  9982  Matthew Rodriguez  1998-04-28
+
+[109 rows x 3 columns]
+Results from file: temp_extracted/test_siard/address.csv
+[{'ID': 24, 'Name': 'Matthew Munoz', 'Birthdate': '1966-05-31'}, {'ID': 86, 'Name': 'Matthew Lewis', 'Birthdate': '1975-06-06'}, {'ID': 96, 'Name': 'Matthew Bryant', 'Birthdate': '1938-06-26'}, {'ID': 242, 'Name': 'Matthew Reed MD', 'Birthdate': '2005-12-12'}, {'ID': 461, 'Name': 'Matthew Scott', 'Birthdate': '1968-01-29'}, {'ID': 538, 'Name': 'Matthew Taylor', 'Birthdate': '1965-05-05'}, {'ID': 641, 'Name': 'Matthew Carrillo', 'Birthdate': '1971-11-30'}, {'ID': 713, 'Name': 'Matthew Williams', 'Birthdate': '1977-05-31'}, {'ID': 766, 'Name': 'Paul Matthews', 'Birthdate': '1994-07-13'}, {'ID': 838, 'Name': 'Matthew Beasley', 'Birthdate': '1953-10-01'}, {'ID': 889, 'Name': 'Matthew Garcia', 'Birthdate': '1960-08-11'}, {'ID': 955, 'Name': 'Matthew Johns', 'Birthdate': '1976-01-09'}, {'ID': 1023, 'Name': 'Jeremy Matthews', 'Birthdate': '1940-11-13'}, {'ID': 1170, 'Name': 'Matthew Wright', 'Birthdate': '1993-11-22'}, {'ID': 1259, 'Name': 'Matthew Tate', 'Birthdate': '1935-06-05'}, {'ID': 1336, 'Name': 'Matthew Thornton', 'Birthdate': '1951-10-22'}, {'ID': 1504, 'Name': 'Sean Matthews', 'Birthdate': '1957-07-27'}, {'ID': 1622, 'Name': 'Matthew Diaz', 'Birthdate': '1981-04-30'}, {'ID': 1623, 'Name': 'Matthew Pope', 'Birthdate': '1965-05-31'}, {'ID': 1901, 'Name': 'Matthew Smith', 'Birthdate': '1976-11-07'}, {'ID': 1906, 'Name': 'Matthew Mendoza', 'Birthdate': '1941-11-09'}, {'ID': 2125, 'Name': 'Jesse Matthews', 'Birthdate': '1941-07-24'}, {'ID': 2260, 'Name': 'Matthew Woodward', 'Birthdate': '1982-08-01'}, {'ID': 2425, 'Name': 'Matthew Reid', 'Birthdate': '1934-09-25'}, {'ID': 2504, 'Name': 'Matthew Smith', 'Birthdate': '1988-06-05'}, {'ID': 2549, 'Name': 'Matthew Lopez', 'Birthdate': '1959-04-02'}, {'ID': 2837, 'Name': 'Matthew Johnson', 'Birthdate': '1962-10-07'}, {'ID': 2882, 'Name': 'Matthew Floyd', 'Birthdate': '1988-05-26'}, {'ID': 3027, 'Name': 'Matthew Lawrence', 'Birthdate': '1947-12-10'}, {'ID': 3109, 'Name': 'Matthew Clark', 'Birthdate': '1954-05-07'}, {'ID': 3127, 'Name': 'Matthew Bruce', 'Birthdate': '1989-04-11'}, {'ID': 3186, 'Name': 'Matthew Waller', 'Birthdate': '1936-11-15'}, {'ID': 3189, 'Name': 'Matthew Scott', 'Birthdate': '1943-04-18'}, {'ID': 3309, 'Name': 'Matthew Mckinney', 'Birthdate': '1983-01-07'}, {'ID': 3355, 'Name': 'Matthew Myers', 'Birthdate': '1949-03-30'}, {'ID': 3438, 'Name': 'Matthew Smith', 'Birthdate': '1963-11-06'}, {'ID': 3538, 'Name': 'Matthew Pham', 'Birthdate': '1934-04-24'}, {'ID': 3736, 'Name': 'Matthew Levine', 'Birthdate': '1968-11-15'}, {'ID': 3737, 'Name': 'Matthew Flowers', 'Birthdate': '1935-03-02'}, {'ID': 3882, 'Name': 'Matthew Young', 'Birthdate': '1984-06-17'}, {'ID': 3957, 'Name': 'Matthew Hobbs', 'Birthdate': '2005-03-08'}, {'ID': 4056, 'Name': 'Matthew Larson', 'Birthdate': '1953-03-22'}, {'ID': 4128, 'Name': 'Matthew Huff', 'Birthdate': '2000-05-27'}, {'ID': 4192, 'Name': 'Matthew Brown', 'Birthdate': '1935-05-29'}, {'ID': 4212, 'Name': 'Matthew Mcdonald', 'Birthdate': '1976-11-08'}, {'ID': 4536, 'Name': 'Matthew Wilson', 'Birthdate': '1981-01-15'}, {'ID': 4574, 'Name': 'Matthew Peterson', 'Birthdate': '1962-10-22'}, {'ID': 4675, 'Name': 'Matthew Murphy', 'Birthdate': '1989-12-24'}, {'ID': 4693, 'Name': 'Matthew Garcia', 'Birthdate': '1958-08-04'}, {'ID': 4705, 'Name': 'Matthew Wheeler', 'Birthdate': '1995-04-10'}, {'ID': 4862, 'Name': 'Matthew King', 'Birthdate': '1957-10-21'}, {'ID': 4897, 'Name': 'Matthew Solis', 'Birthdate': '1945-08-25'}, {'ID': 5001, 'Name': 'Matthew Camacho', 'Birthdate': '1970-07-02'}, {'ID': 5581, 'Name': 'Amanda Matthews', 'Birthdate': '1941-08-20'}, {'ID': 5785, 'Name': 'Matthew Holt', 'Birthdate': '1978-12-26'}, {'ID': 5795, 'Name': 'Matthew Brewer', 'Birthdate': '1963-07-11'}, {'ID': 5890, 'Name': 'Matthew Price PhD', 'Birthdate': '1964-05-12'}, {'ID': 5955, 'Name': 'Matthew Gardner', 'Birthdate': '1963-06-22'}, {'ID': 6053, 'Name': 'Matthew Atkins', 'Birthdate': '1996-12-16'}, {'ID': 6094, 'Name': 'Matthew Little', 'Birthdate': '1950-07-05'}, {'ID': 6175, 'Name': 'Matthew Salazar', 'Birthdate': '1998-12-04'}, {'ID': 6276, 'Name': 'Matthew Vasquez', 'Birthdate': '2000-07-20'}, {'ID': 6286, 'Name': 'Matthew Robinson', 'Birthdate': '1965-04-05'}, {'ID': 6714, 'Name': 'Matthew Nielsen', 'Birthdate': '1997-10-22'}, {'ID': 6836, 'Name': 'Matthew Deleon', 'Birthdate': '1976-12-07'}, {'ID': 6879, 'Name': 'Matthew Stanley', 'Birthdate': '1978-08-11'}, {'ID': 6929, 'Name': 'Matthew Farley', 'Birthdate': '2002-09-10'}, {'ID': 6931, 'Name': 'Dr. Matthew Wilson', 'Birthdate': '1969-01-28'}, {'ID': 7174, 'Name': 'Matthew Taylor', 'Birthdate': '1985-09-29'}, {'ID': 7204, 'Name': 'Matthew Garcia', 'Birthdate': '1961-05-24'}, {'ID': 7220, 'Name': 'Matthew Clarke', 'Birthdate': '1972-02-04'}, {'ID': 7289, 'Name': 'Matthew Herrera', 'Birthdate': '1979-01-09'}, {'ID': 7302, 'Name': 'Matthew Russell', 'Birthdate': '1998-03-24'}, {'ID': 7352, 'Name': 'Matthew Bennett', 'Birthdate': '2004-08-08'}, {'ID': 7353, 'Name': 'Matthew Harmon', 'Birthdate': '1982-09-09'}, {'ID': 7388, 'Name': 'Matthew Ramsey', 'Birthdate': '1992-12-24'}, {'ID': 7548, 'Name': 'Elizabeth Matthews', 'Birthdate': '1948-12-19'}, {'ID': 7562, 'Name': 'William Matthews', 'Birthdate': '1958-05-14'}, {'ID': 7581, 'Name': 'Alexandra Matthews', 'Birthdate': '1982-10-18'}, {'ID': 7588, 'Name': 'Matthew Fletcher', 'Birthdate': '1947-03-02'}, {'ID': 7622, 'Name': 'Matthew Baker', 'Birthdate': '1945-03-01'}, {'ID': 7699, 'Name': 'Matthew Brown', 'Birthdate': '1968-01-17'}, {'ID': 7731, 'Name': 'Matthew Davis', 'Birthdate': '2000-12-11'}, {'ID': 7957, 'Name': 'Matthew Atkins', 'Birthdate': '1995-04-16'}, {'ID': 8011, 'Name': 'Matthew Hicks', 'Birthdate': '1961-07-23'}, {'ID': 8036, 'Name': 'Matthew Saunders', 'Birthdate': '1953-05-20'}, {'ID': 8070, 'Name': 'Matthew Sanford', 'Birthdate': '1964-03-15'}, {'ID': 8080, 'Name': 'Matthew Henson', 'Birthdate': '1960-01-16'}, {'ID': 8555, 'Name': 'Matthew Pacheco', 'Birthdate': '2002-12-05'}, {'ID': 8619, 'Name': 'Matthew Murray', 'Birthdate': '1986-06-15'}, {'ID': 8693, 'Name': 'Anthony Matthews', 'Birthdate': '1979-12-23'}, {'ID': 8707, 'Name': 'Matthew Gonzalez', 'Birthdate': '1993-02-27'}, {'ID': 8810, 'Name': 'Matthew Owens', 'Birthdate': '1966-08-06'}, {'ID': 9043, 'Name': 'Matthew Carson', 'Birthdate': '1995-09-30'}, {'ID': 9155, 'Name': 'Matthew Newman', 'Birthdate': '1994-09-21'}, {'ID': 9176, 'Name': 'Matthew Bowen', 'Birthdate': '1992-01-15'}, {'ID': 9215, 'Name': 'Matthew Reeves', 'Birthdate': '1942-06-24'}, {'ID': 9252, 'Name': 'Matthew Mercado', 'Birthdate': '2005-08-04'}, {'ID': 9305, 'Name': 'Matthew Higgins', 'Birthdate': '1971-09-14'}, {'ID': 9335, 'Name': 'Matthew Simmons', 'Birthdate': '1991-03-30'}, {'ID': 9355, 'Name': 'Mercedes Matthews', 'Birthdate': '2004-06-11'}, {'ID': 9522, 'Name': 'Matthew Travis', 'Birthdate': '2004-06-04'}, {'ID': 9526, 'Name': 'Matthew Myers', 'Birthdate': '1956-09-27'}, {'ID': 9734, 'Name': 'Matthew Wise', 'Birthdate': '2006-01-01'}, {'ID': 9790, 'Name': 'Matthew Mason', 'Birthdate': '1966-08-18'}, {'ID': 9800, 'Name': 'Matthew Figueroa', 'Birthdate': '1998-10-05'}, {'ID': 9845, 'Name': 'Matthew Phillips', 'Birthdate': '1983-11-24'}, {'ID': 9952, 'Name': 'Matthew Burnett', 'Birthdate': '1942-08-04'}, {'ID': 9982, 'Name': 'Matthew Rodriguez', 'Birthdate': '1998-04-28'}]
 Found matches in file: temp_extracted/test_siard/person.csv
-   ID    Name   Birthdate
-0   1  Simone  1980-01-01
+        ID             Name   Birthdate
+11      12    Matthew Duran  1952-10-17
+196    197   Matthew Hurley  1956-10-20
+522    523   Matthew Barron  1994-04-06
+796    797    Matthew Clark  1998-04-24
+800    801     Matthew Lutz  1956-01-14
+...    ...              ...         ...
+9701  9702  Matthew Sanchez  1954-01-01
+9816  9817  Matthew Pearson  1996-09-02
+9865  9866    Matthew Dixon  1995-12-08
+9870  9871    Matthew Smith  1964-11-01
+9918  9919   Matthew Montes  1996-02-13
+
+[120 rows x 3 columns]
 Results from file: temp_extracted/test_siard/person.csv
-[{'ID': 1, 'Name': 'Simone', 'Birthdate': '1980-01-01'}]
-Total results found: 1
-127.0.0.1 - - [28/May/2024 19:53:10] "POST /search HTTP/1.1" 200 -
-Flask application running...
-Flask application running...
-Flask application configuration loaded.
-Application config: <Config {'DEBUG': False, 'TESTING': False, 'PROPAGATE_EXCEPTIONS': None, 'SECRET_KEY': 'you-will-never-guess', 'PERMANENT_SESSION_LIFETIME': datetime.timedelta(days=31), 'USE_X_SENDFILE': False, 'SERVER_NAME': None, 'APPLICATION_ROOT': '/', 'SESSION_COOKIE_NAME': 'session', 'SESSION_COOKIE_DOMAIN': None, 'SESSION_COOKIE_PATH': None, 'SESSION_COOKIE_HTTPONLY': True, 'SESSION_COOKIE_SECURE': False, 'SESSION_COOKIE_SAMESITE': None, 'SESSION_REFRESH_EACH_REQUEST': True, 'MAX_CONTENT_LENGTH': None, 'SEND_FILE_MAX_AGE_DEFAULT': None, 'TRAP_BAD_REQUEST_ERRORS': None, 'TRAP_HTTP_EXCEPTIONS': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'PREFERRED_URL_SCHEME': 'http', 'TEMPLATES_AUTO_RELOAD': None, 'MAX_COOKIE_SIZE': 4093, 'LOGGING': {'version': 1, 'disable_existing_loggers': False, 'handlers': {'file': {'level': 'DEBUG', 'class': 'logging.FileHandler', 'filename': 'logs/app.log'}}, 'loggers': {'root': {'handlers': ['file'], 'level': 'DEBUG'}}}}>
-Search blueprint registered.
-Flask application created.
-Browser will be opened shortly...
-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-[33mPress CTRL+C to quit[0m
- * Restarting with stat
-Flask application configuration loaded.
-Application config: <Config {'DEBUG': False, 'TESTING': False, 'PROPAGATE_EXCEPTIONS': None, 'SECRET_KEY': 'you-will-never-guess', 'PERMANENT_SESSION_LIFETIME': datetime.timedelta(days=31), 'USE_X_SENDFILE': False, 'SERVER_NAME': None, 'APPLICATION_ROOT': '/', 'SESSION_COOKIE_NAME': 'session', 'SESSION_COOKIE_DOMAIN': None, 'SESSION_COOKIE_PATH': None, 'SESSION_COOKIE_HTTPONLY': True, 'SESSION_COOKIE_SECURE': False, 'SESSION_COOKIE_SAMESITE': None, 'SESSION_REFRESH_EACH_REQUEST': True, 'MAX_CONTENT_LENGTH': None, 'SEND_FILE_MAX_AGE_DEFAULT': None, 'TRAP_BAD_REQUEST_ERRORS': None, 'TRAP_HTTP_EXCEPTIONS': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'PREFERRED_URL_SCHEME': 'http', 'TEMPLATES_AUTO_RELOAD': None, 'MAX_COOKIE_SIZE': 4093, 'LOGGING': {'version': 1, 'disable_existing_loggers': False, 'handlers': {'file': {'level': 'DEBUG', 'class': 'logging.FileHandler', 'filename': 'logs/app.log'}}, 'loggers': {'root': {'handlers': ['file'], 'level': 'DEBUG'}}}}>
-Search blueprint registered.
-Flask application created.
-Browser will be opened shortly...
- * Debugger is active!
- * Debugger PIN: 420-615-573
-Web browser opened successfully.
-127.0.0.1 - - [28/May/2024 19:53:26] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:53:26] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-Web browser opened successfully.
-127.0.0.1 - - [28/May/2024 19:53:27] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [28/May/2024 19:53:27] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
- * Detected change in '/Users/python/Python Projekte/Staatsarchiv/Nemo/config.py', reloading
- * Restarting with stat
-[2024-05-28 19:55:03,463] INFO in app: Flask application configuration loaded.
-[2024-05-28 19:55:03,463] DEBUG in app: Application config: <Config {'DEBUG': False, 'TESTING': False, 'PROPAGATE_EXCEPTIONS': None, 'SECRET_KEY': 'you-will-never-guess', 'PERMANENT_SESSION_LIFETIME': datetime.timedelta(days=31), 'USE_X_SENDFILE': False, 'SERVER_NAME': None, 'APPLICATION_ROOT': '/', 'SESSION_COOKIE_NAME': 'session', 'SESSION_COOKIE_DOMAIN': None, 'SESSION_COOKIE_PATH': None, 'SESSION_COOKIE_HTTPONLY': True, 'SESSION_COOKIE_SECURE': False, 'SESSION_COOKIE_SAMESITE': None, 'SESSION_REFRESH_EACH_REQUEST': True, 'MAX_CONTENT_LENGTH': None, 'SEND_FILE_MAX_AGE_DEFAULT': None, 'TRAP_BAD_REQUEST_ERRORS': None, 'TRAP_HTTP_EXCEPTIONS': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'PREFERRED_URL_SCHEME': 'http', 'TEMPLATES_AUTO_RELOAD': None, 'MAX_COOKIE_SIZE': 4093, 'LOGGING': {'version': 1, 'disable_existing_loggers': False, 'formatters': {'default': {'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'}}, 'handlers': {'console': {'class': 'logging.StreamHandler', 'formatter': 'default', 'level': 'DEBUG'}, 'file': {'class': 'logging.handlers.RotatingFileHandler', 'formatter': 'default', 'level': 'DEBUG', 'filename': 'logs/app.log', 'maxBytes': 10485760, 'backupCount': 5}}, 'root': {'handlers': ['console', 'file'], 'level': 'DEBUG'}}}>
-[2024-05-28 19:55:03,464] INFO in app: Search blueprint registered.
-[2024-05-28 19:55:03,464] INFO in app: Flask application created.
-[2024-05-28 19:55:03,464] INFO in app: Browser will be opened shortly...
-[2024-05-28 19:55:03,468] WARNING in _internal:  * Debugger is active!
-[2024-05-28 19:55:03,475] INFO in _internal:  * Debugger PIN: 420-615-573
-[2024-05-28 19:55:04,665] INFO in app: Web browser opened successfully.
-[2024-05-28 19:55:04,752] INFO in _internal: 127.0.0.1 - - [28/May/2024 19:55:04] "GET / HTTP/1.1" 200 -
-[2024-05-28 19:55:04,757] INFO in _internal: 127.0.0.1 - - [28/May/2024 19:55:04] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-[2024-05-28 19:55:04,760] INFO in _internal: 127.0.0.1 - - [28/May/2024 19:55:04] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
-[2024-05-28 19:55:07,234] INFO in app: Flask application running...
-Flask application running...
+[{'ID': 12, 'Name': 'Matthew Duran', 'Birthdate': '1952-10-17'}, {'ID': 197, 'Name': 'Matthew Hurley', 'Birthdate': '1956-10-20'}, {'ID': 523, 'Name': 'Matthew Barron', 'Birthdate': '1994-04-06'}, {'ID': 797, 'Name': 'Matthew Clark', 'Birthdate': '1998-04-24'}, {'ID': 801, 'Name': 'Matthew Lutz', 'Birthdate': '1956-01-14'}, {'ID': 860, 'Name': 'Matthew Rogers', 'Birthdate': '1937-06-16'}, {'ID': 981, 'Name': 'Matthew Thomas', 'Birthdate': '2005-11-13'}, {'ID': 1044, 'Name': 'Matthew Casey', 'Birthdate': '2003-02-02'}, {'ID': 1078, 'Name': 'Matthew Davis', 'Birthdate': '1995-03-30'}, {'ID': 1082, 'Name': 'Matthew Erickson', 'Birthdate': '1976-04-02'}, {'ID': 1133, 'Name': 'Dr. Matthew Harris', 'Birthdate': '1980-12-22'}, {'ID': 1154, 'Name': 'Matthew Carroll', 'Birthdate': '1958-12-31'}, {'ID': 1168, 'Name': 'Matthew Moore', 'Birthdate': '1949-04-12'}, {'ID': 1259, 'Name': 'Matthew Lewis', 'Birthdate': '1976-05-17'}, {'ID': 1380, 'Name': 'Matthew Marsh', 'Birthdate': '1949-12-21'}, {'ID': 1542, 'Name': 'Matthew Carter', 'Birthdate': '1982-04-29'}, {'ID': 1836, 'Name': 'Matthew Martinez', 'Birthdate': '1996-06-06'}, {'ID': 1849, 'Name': 'Matthew Mendez MD', 'Birthdate': '1960-01-16'}, {'ID': 1923, 'Name': 'Matthew Thomas', 'Birthdate': '1999-09-20'}, {'ID': 2030, 'Name': 'Matthew Stevens', 'Birthdate': '1987-08-21'}, {'ID': 2059, 'Name': 'Matthew Elliott', 'Birthdate': '1939-08-12'}, {'ID': 2070, 'Name': 'Matthew Williams', 'Birthdate': '1956-07-22'}, {'ID': 2118, 'Name': 'Matthew Henry', 'Birthdate': '1977-06-04'}, {'ID': 2221, 'Name': 'Matthew Thomas', 'Birthdate': '1981-06-12'}, {'ID': 2428, 'Name': 'Matthew Compton', 'Birthdate': '1970-02-25'}, {'ID': 2437, 'Name': 'Matthew Vincent', 'Birthdate': '1966-07-08'}, {'ID': 2445, 'Name': 'Matthew Ramirez', 'Birthdate': '1998-12-23'}, {'ID': 2469, 'Name': 'Matthew Maxwell', 'Birthdate': '1955-01-03'}, {'ID': 2614, 'Name': 'Matthew Ruiz', 'Birthdate': '1997-07-15'}, {'ID': 2624, 'Name': 'Matthew Smith', 'Birthdate': '1952-10-14'}, {'ID': 2719, 'Name': 'Matthew Jackson', 'Birthdate': '1961-07-12'}, {'ID': 2881, 'Name': 'Matthew Sharp', 'Birthdate': '1933-08-28'}, {'ID': 2891, 'Name': 'Matthew Ramirez', 'Birthdate': '1953-01-08'}, {'ID': 3038, 'Name': 'Matthew Cordova', 'Birthdate': '1939-12-23'}, {'ID': 3177, 'Name': 'Matthew Long', 'Birthdate': '1973-11-03'}, {'ID': 3183, 'Name': 'Matthew Lawrence', 'Birthdate': '1992-01-04'}, {'ID': 3240, 'Name': 'Matthew Warner', 'Birthdate': '1945-04-27'}, {'ID': 3502, 'Name': 'Matthew Cabrera', 'Birthdate': '1983-08-12'}, {'ID': 3514, 'Name': 'Matthew Walters', 'Birthdate': '2006-04-24'}, {'ID': 3613, 'Name': 'Matthew Howard', 'Birthdate': '1946-01-12'}, {'ID': 3683, 'Name': 'Matthew Atkinson', 'Birthdate': '1973-02-01'}, {'ID': 3718, 'Name': 'Matthew Cunningham', 'Birthdate': '1938-04-11'}, {'ID': 3799, 'Name': 'Matthew Klein', 'Birthdate': '1990-07-13'}, {'ID': 3912, 'Name': 'Matthew Mcdonald', 'Birthdate': '1958-09-16'}, {'ID': 4024, 'Name': 'Sean Matthews', 'Birthdate': '1946-01-29'}, {'ID': 4109, 'Name': 'Matthew Walker', 'Birthdate': '1947-09-01'}, {'ID': 4149, 'Name': 'Matthew Bell II', 'Birthdate': '2005-10-02'}, {'ID': 4188, 'Name': 'Matthew Powers', 'Birthdate': '1991-01-28'}, {'ID': 4214, 'Name': 'Matthew Williams', 'Birthdate': '1947-01-15'}, {'ID': 4234, 'Name': 'Matthew Haynes', 'Birthdate': '1988-12-16'}, {'ID': 4299, 'Name': 'Matthew Fox', 'Birthdate': '2005-02-15'}, {'ID': 4369, 'Name': 'Matthew Wolfe', 'Birthdate': '1982-02-28'}, {'ID': 4414, 'Name': 'Matthew Salinas', 'Birthdate': '1995-08-30'}, {'ID': 4431, 'Name': 'Matthew Gray', 'Birthdate': '1990-08-22'}, {'ID': 4500, 'Name': 'Matthew Castillo', 'Birthdate': '1943-05-23'}, {'ID': 4683, 'Name': 'Matthew Schmidt', 'Birthdate': '1963-09-13'}, {'ID': 4776, 'Name': 'Matthew Smith', 'Birthdate': '1978-11-28'}, {'ID': 4857, 'Name': 'Matthew Davis', 'Birthdate': '1955-09-19'}, {'ID': 4872, 'Name': 'Matthew Holland', 'Birthdate': '1974-05-20'}, {'ID': 4930, 'Name': 'Matthew Watson', 'Birthdate': '1981-08-17'}, {'ID': 5173, 'Name': 'Matthew Wright', 'Birthdate': '2004-05-16'}, {'ID': 5381, 'Name': 'Matthew Paul', 'Birthdate': '1943-06-13'}, {'ID': 5617, 'Name': 'Matthew Mckee', 'Birthdate': '1987-04-05'}, {'ID': 5657, 'Name': 'Matthew Davis', 'Birthdate': '1972-09-28'}, {'ID': 5707, 'Name': 'Matthew Miller', 'Birthdate': '1946-05-10'}, {'ID': 5868, 'Name': 'Matthew Murray', 'Birthdate': '1990-10-17'}, {'ID': 6148, 'Name': 'Matthew King', 'Birthdate': '1969-03-12'}, {'ID': 6162, 'Name': 'Matthew Allen', 'Birthdate': '1970-01-03'}, {'ID': 6189, 'Name': 'Joseph Matthews', 'Birthdate': '2003-03-11'}, {'ID': 6430, 'Name': 'Erin Matthews', 'Birthdate': '1955-11-06'}, {'ID': 6492, 'Name': 'Matthew Evans', 'Birthdate': '1943-10-05'}, {'ID': 6520, 'Name': 'Matthew Johnston', 'Birthdate': '2003-07-11'}, {'ID': 6585, 'Name': 'Matthew Moore', 'Birthdate': '1941-11-05'}, {'ID': 6659, 'Name': 'Matthew Green', 'Birthdate': '1985-05-07'}, {'ID': 6764, 'Name': 'Matthew Jennings', 'Birthdate': '2001-09-09'}, {'ID': 6944, 'Name': 'Matthew Rose', 'Birthdate': '1977-12-27'}, {'ID': 7112, 'Name': 'Lisa Matthews', 'Birthdate': '2005-10-08'}, {'ID': 7142, 'Name': 'Matthew Swanson', 'Birthdate': '1973-11-08'}, {'ID': 7181, 'Name': 'Matthew Franklin', 'Birthdate': '1973-12-11'}, {'ID': 7186, 'Name': 'Matthew Huang', 'Birthdate': '1950-04-07'}, {'ID': 7298, 'Name': 'Matthew Levy', 'Birthdate': '1981-04-14'}, {'ID': 7348, 'Name': 'Matthew Torres', 'Birthdate': '1940-04-04'}, {'ID': 7410, 'Name': 'Matthew Carter', 'Birthdate': '1960-12-02'}, {'ID': 7418, 'Name': 'Matthew Elliott', 'Birthdate': '1964-03-20'}, {'ID': 7424, 'Name': 'Matthew Johnson', 'Birthdate': '2001-05-12'}, {'ID': 7518, 'Name': 'Gail Matthews', 'Birthdate': '1942-05-13'}, {'ID': 7535, 'Name': 'Anthony Matthews', 'Birthdate': '1965-05-23'}, {'ID': 7633, 'Name': 'Matthew Yang', 'Birthdate': '1988-11-25'}, {'ID': 7698, 'Name': 'Matthew Cole', 'Birthdate': '1956-04-27'}, {'ID': 7704, 'Name': 'Matthew Harris', 'Birthdate': '1933-08-26'}, {'ID': 7803, 'Name': 'Matthew Shepard', 'Birthdate': '1998-07-22'}, {'ID': 7919, 'Name': 'Matthew Bird', 'Birthdate': '1954-04-01'}, {'ID': 7971, 'Name': 'Matthew Harris', 'Birthdate': '1981-01-26'}, {'ID': 8109, 'Name': 'Matthew James', 'Birthdate': '1950-07-10'}, {'ID': 8471, 'Name': 'Matthew Cunningham', 'Birthdate': '1963-05-05'}, {'ID': 8505, 'Name': 'Jennifer Matthews', 'Birthdate': '1955-05-25'}, {'ID': 8525, 'Name': 'Matthew Savage', 'Birthdate': '1942-01-01'}, {'ID': 8549, 'Name': 'Matthew Carter', 'Birthdate': '1967-08-27'}, {'ID': 8556, 'Name': 'Matthew Porter', 'Birthdate': '1934-05-03'}, {'ID': 8564, 'Name': 'Matthew Hunt', 'Birthdate': '2003-05-05'}, {'ID': 8608, 'Name': 'Matthew Maynard', 'Birthdate': '1939-07-24'}, {'ID': 8686, 'Name': 'Matthew Ferguson', 'Birthdate': '1982-04-03'}, {'ID': 8702, 'Name': 'Matthew Lowe', 'Birthdate': '1972-04-14'}, {'ID': 8850, 'Name': 'Rebecca Matthews', 'Birthdate': '1951-01-21'}, {'ID': 8856, 'Name': 'Matthew Deleon', 'Birthdate': '1981-01-22'}, {'ID': 9016, 'Name': 'Matthew Garcia', 'Birthdate': '1993-08-01'}, {'ID': 9245, 'Name': 'Matthew Swanson', 'Birthdate': '1980-09-30'}, {'ID': 9340, 'Name': 'Matthew Griffith', 'Birthdate': '1963-12-20'}, {'ID': 9405, 'Name': 'Matthew Patel', 'Birthdate': '1996-09-17'}, {'ID': 9436, 'Name': 'Matthew Terrell', 'Birthdate': '1977-05-07'}, {'ID': 9505, 'Name': 'Matthew Munoz', 'Birthdate': '1976-04-07'}, {'ID': 9518, 'Name': 'Matthew Sanford', 'Birthdate': '1938-01-03'}, {'ID': 9555, 'Name': 'Matthew Yang', 'Birthdate': '1972-05-15'}, {'ID': 9599, 'Name': 'Matthew Farmer', 'Birthdate': '1999-08-14'}, {'ID': 9691, 'Name': 'Matthew Smith', 'Birthdate': '1982-10-22'}, {'ID': 9702, 'Name': 'Matthew Sanchez', 'Birthdate': '1954-01-01'}, {'ID': 9817, 'Name': 'Matthew Pearson', 'Birthdate': '1996-09-02'}, {'ID': 9866, 'Name': 'Matthew Dixon', 'Birthdate': '1995-12-08'}, {'ID': 9871, 'Name': 'Matthew Smith', 'Birthdate': '1964-11-01'}, {'ID': 9919, 'Name': 'Matthew Montes', 'Birthdate': '1996-02-13'}]
+Total results found: 229
+Search results: [{'ID': 24, 'Name': 'Matthew Munoz', 'Birthdate': '1966-05-31'}, {'ID': 86, 'Name': 'Matthew Lewis', 'Birthdate': '1975-06-06'}, {'ID': 96, 'Name': 'Matthew Bryant', 'Birthdate': '1938-06-26'}, {'ID': 242, 'Name': 'Matthew Reed MD', 'Birthdate': '2005-12-12'}, {'ID': 461, 'Name': 'Matthew Scott', 'Birthdate': '1968-01-29'}, {'ID': 538, 'Name': 'Matthew Taylor', 'Birthdate': '1965-05-05'}, {'ID': 641, 'Name': 'Matthew Carrillo', 'Birthdate': '1971-11-30'}, {'ID': 713, 'Name': 'Matthew Williams', 'Birthdate': '1977-05-31'}, {'ID': 766, 'Name': 'Paul Matthews', 'Birthdate': '1994-07-13'}, {'ID': 838, 'Name': 'Matthew Beasley', 'Birthdate': '1953-10-01'}, {'ID': 889, 'Name': 'Matthew Garcia', 'Birthdate': '1960-08-11'}, {'ID': 955, 'Name': 'Matthew Johns', 'Birthdate': '1976-01-09'}, {'ID': 1023, 'Name': 'Jeremy Matthews', 'Birthdate': '1940-11-13'}, {'ID': 1170, 'Name': 'Matthew Wright', 'Birthdate': '1993-11-22'}, {'ID': 1259, 'Name': 'Matthew Tate', 'Birthdate': '1935-06-05'}, {'ID': 1336, 'Name': 'Matthew Thornton', 'Birthdate': '1951-10-22'}, {'ID': 1504, 'Name': 'Sean Matthews', 'Birthdate': '1957-07-27'}, {'ID': 1622, 'Name': 'Matthew Diaz', 'Birthdate': '1981-04-30'}, {'ID': 1623, 'Name': 'Matthew Pope', 'Birthdate': '1965-05-31'}, {'ID': 1901, 'Name': 'Matthew Smith', 'Birthdate': '1976-11-07'}, {'ID': 1906, 'Name': 'Matthew Mendoza', 'Birthdate': '1941-11-09'}, {'ID': 2125, 'Name': 'Jesse Matthews', 'Birthdate': '1941-07-24'}, {'ID': 2260, 'Name': 'Matthew Woodward', 'Birthdate': '1982-08-01'}, {'ID': 2425, 'Name': 'Matthew Reid', 'Birthdate': '1934-09-25'}, {'ID': 2504, 'Name': 'Matthew Smith', 'Birthdate': '1988-06-05'}, {'ID': 2549, 'Name': 'Matthew Lopez', 'Birthdate': '1959-04-02'}, {'ID': 2837, 'Name': 'Matthew Johnson', 'Birthdate': '1962-10-07'}, {'ID': 2882, 'Name': 'Matthew Floyd', 'Birthdate': '1988-05-26'}, {'ID': 3027, 'Name': 'Matthew Lawrence', 'Birthdate': '1947-12-10'}, {'ID': 3109, 'Name': 'Matthew Clark', 'Birthdate': '1954-05-07'}, {'ID': 3127, 'Name': 'Matthew Bruce', 'Birthdate': '1989-04-11'}, {'ID': 3186, 'Name': 'Matthew Waller', 'Birthdate': '1936-11-15'}, {'ID': 3189, 'Name': 'Matthew Scott', 'Birthdate': '1943-04-18'}, {'ID': 3309, 'Name': 'Matthew Mckinney', 'Birthdate': '1983-01-07'}, {'ID': 3355, 'Name': 'Matthew Myers', 'Birthdate': '1949-03-30'}, {'ID': 3438, 'Name': 'Matthew Smith', 'Birthdate': '1963-11-06'}, {'ID': 3538, 'Name': 'Matthew Pham', 'Birthdate': '1934-04-24'}, {'ID': 3736, 'Name': 'Matthew Levine', 'Birthdate': '1968-11-15'}, {'ID': 3737, 'Name': 'Matthew Flowers', 'Birthdate': '1935-03-02'}, {'ID': 3882, 'Name': 'Matthew Young', 'Birthdate': '1984-06-17'}, {'ID': 3957, 'Name': 'Matthew Hobbs', 'Birthdate': '2005-03-08'}, {'ID': 4056, 'Name': 'Matthew Larson', 'Birthdate': '1953-03-22'}, {'ID': 4128, 'Name': 'Matthew Huff', 'Birthdate': '2000-05-27'}, {'ID': 4192, 'Name': 'Matthew Brown', 'Birthdate': '1935-05-29'}, {'ID': 4212, 'Name': 'Matthew Mcdonald', 'Birthdate': '1976-11-08'}, {'ID': 4536, 'Name': 'Matthew Wilson', 'Birthdate': '1981-01-15'}, {'ID': 4574, 'Name': 'Matthew Peterson', 'Birthdate': '1962-10-22'}, {'ID': 4675, 'Name': 'Matthew Murphy', 'Birthdate': '1989-12-24'}, {'ID': 4693, 'Name': 'Matthew Garcia', 'Birthdate': '1958-08-04'}, {'ID': 4705, 'Name': 'Matthew Wheeler', 'Birthdate': '1995-04-10'}, {'ID': 4862, 'Name': 'Matthew King', 'Birthdate': '1957-10-21'}, {'ID': 4897, 'Name': 'Matthew Solis', 'Birthdate': '1945-08-25'}, {'ID': 5001, 'Name': 'Matthew Camacho', 'Birthdate': '1970-07-02'}, {'ID': 5581, 'Name': 'Amanda Matthews', 'Birthdate': '1941-08-20'}, {'ID': 5785, 'Name': 'Matthew Holt', 'Birthdate': '1978-12-26'}, {'ID': 5795, 'Name': 'Matthew Brewer', 'Birthdate': '1963-07-11'}, {'ID': 5890, 'Name': 'Matthew Price PhD', 'Birthdate': '1964-05-12'}, {'ID': 5955, 'Name': 'Matthew Gardner', 'Birthdate': '1963-06-22'}, {'ID': 6053, 'Name': 'Matthew Atkins', 'Birthdate': '1996-12-16'}, {'ID': 6094, 'Name': 'Matthew Little', 'Birthdate': '1950-07-05'}, {'ID': 6175, 'Name': 'Matthew Salazar', 'Birthdate': '1998-12-04'}, {'ID': 6276, 'Name': 'Matthew Vasquez', 'Birthdate': '2000-07-20'}, {'ID': 6286, 'Name': 'Matthew Robinson', 'Birthdate': '1965-04-05'}, {'ID': 6714, 'Name': 'Matthew Nielsen', 'Birthdate': '1997-10-22'}, {'ID': 6836, 'Name': 'Matthew Deleon', 'Birthdate': '1976-12-07'}, {'ID': 6879, 'Name': 'Matthew Stanley', 'Birthdate': '1978-08-11'}, {'ID': 6929, 'Name': 'Matthew Farley', 'Birthdate': '2002-09-10'}, {'ID': 6931, 'Name': 'Dr. Matthew Wilson', 'Birthdate': '1969-01-28'}, {'ID': 7174, 'Name': 'Matthew Taylor', 'Birthdate': '1985-09-29'}, {'ID': 7204, 'Name': 'Matthew Garcia', 'Birthdate': '1961-05-24'}, {'ID': 7220, 'Name': 'Matthew Clarke', 'Birthdate': '1972-02-04'}, {'ID': 7289, 'Name': 'Matthew Herrera', 'Birthdate': '1979-01-09'}, {'ID': 7302, 'Name': 'Matthew Russell', 'Birthdate': '1998-03-24'}, {'ID': 7352, 'Name': 'Matthew Bennett', 'Birthdate': '2004-08-08'}, {'ID': 7353, 'Name': 'Matthew Harmon', 'Birthdate': '1982-09-09'}, {'ID': 7388, 'Name': 'Matthew Ramsey', 'Birthdate': '1992-12-24'}, {'ID': 7548, 'Name': 'Elizabeth Matthews', 'Birthdate': '1948-12-19'}, {'ID': 7562, 'Name': 'William Matthews', 'Birthdate': '1958-05-14'}, {'ID': 7581, 'Name': 'Alexandra Matthews', 'Birthdate': '1982-10-18'}, {'ID': 7588, 'Name': 'Matthew Fletcher', 'Birthdate': '1947-03-02'}, {'ID': 7622, 'Name': 'Matthew Baker', 'Birthdate': '1945-03-01'}, {'ID': 7699, 'Name': 'Matthew Brown', 'Birthdate': '1968-01-17'}, {'ID': 7731, 'Name': 'Matthew Davis', 'Birthdate': '2000-12-11'}, {'ID': 7957, 'Name': 'Matthew Atkins', 'Birthdate': '1995-04-16'}, {'ID': 8011, 'Name': 'Matthew Hicks', 'Birthdate': '1961-07-23'}, {'ID': 8036, 'Name': 'Matthew Saunders', 'Birthdate': '1953-05-20'}, {'ID': 8070, 'Name': 'Matthew Sanford', 'Birthdate': '1964-03-15'}, {'ID': 8080, 'Name': 'Matthew Henson', 'Birthdate': '1960-01-16'}, {'ID': 8555, 'Name': 'Matthew Pacheco', 'Birthdate': '2002-12-05'}, {'ID': 8619, 'Name': 'Matthew Murray', 'Birthdate': '1986-06-15'}, {'ID': 8693, 'Name': 'Anthony Matthews', 'Birthdate': '1979-12-23'}, {'ID': 8707, 'Name': 'Matthew Gonzalez', 'Birthdate': '1993-02-27'}, {'ID': 8810, 'Name': 'Matthew Owens', 'Birthdate': '1966-08-06'}, {'ID': 9043, 'Name': 'Matthew Carson', 'Birthdate': '1995-09-30'}, {'ID': 9155, 'Name': 'Matthew Newman', 'Birthdate': '1994-09-21'}, {'ID': 9176, 'Name': 'Matthew Bowen', 'Birthdate': '1992-01-15'}, {'ID': 9215, 'Name': 'Matthew Reeves', 'Birthdate': '1942-06-24'}, {'ID': 9252, 'Name': 'Matthew Mercado', 'Birthdate': '2005-08-04'}, {'ID': 9305, 'Name': 'Matthew Higgins', 'Birthdate': '1971-09-14'}, {'ID': 9335, 'Name': 'Matthew Simmons', 'Birthdate': '1991-03-30'}, {'ID': 9355, 'Name': 'Mercedes Matthews', 'Birthdate': '2004-06-11'}, {'ID': 9522, 'Name': 'Matthew Travis', 'Birthdate': '2004-06-04'}, {'ID': 9526, 'Name': 'Matthew Myers', 'Birthdate': '1956-09-27'}, {'ID': 9734, 'Name': 'Matthew Wise', 'Birthdate': '2006-01-01'}, {'ID': 9790, 'Name': 'Matthew Mason', 'Birthdate': '1966-08-18'}, {'ID': 9800, 'Name': 'Matthew Figueroa', 'Birthdate': '1998-10-05'}, {'ID': 9845, 'Name': 'Matthew Phillips', 'Birthdate': '1983-11-24'}, {'ID': 9952, 'Name': 'Matthew Burnett', 'Birthdate': '1942-08-04'}, {'ID': 9982, 'Name': 'Matthew Rodriguez', 'Birthdate': '1998-04-28'}, {'ID': 12, 'Name': 'Matthew Duran', 'Birthdate': '1952-10-17'}, {'ID': 197, 'Name': 'Matthew Hurley', 'Birthdate': '1956-10-20'}, {'ID': 523, 'Name': 'Matthew Barron', 'Birthdate': '1994-04-06'}, {'ID': 797, 'Name': 'Matthew Clark', 'Birthdate': '1998-04-24'}, {'ID': 801, 'Name': 'Matthew Lutz', 'Birthdate': '1956-01-14'}, {'ID': 860, 'Name': 'Matthew Rogers', 'Birthdate': '1937-06-16'}, {'ID': 981, 'Name': 'Matthew Thomas', 'Birthdate': '2005-11-13'}, {'ID': 1044, 'Name': 'Matthew Casey', 'Birthdate': '2003-02-02'}, {'ID': 1078, 'Name': 'Matthew Davis', 'Birthdate': '1995-03-30'}, {'ID': 1082, 'Name': 'Matthew Erickson', 'Birthdate': '1976-04-02'}, {'ID': 1133, 'Name': 'Dr. Matthew Harris', 'Birthdate': '1980-12-22'}, {'ID': 1154, 'Name': 'Matthew Carroll', 'Birthdate': '1958-12-31'}, {'ID': 1168, 'Name': 'Matthew Moore', 'Birthdate': '1949-04-12'}, {'ID': 1259, 'Name': 'Matthew Lewis', 'Birthdate': '1976-05-17'}, {'ID': 1380, 'Name': 'Matthew Marsh', 'Birthdate': '1949-12-21'}, {'ID': 1542, 'Name': 'Matthew Carter', 'Birthdate': '1982-04-29'}, {'ID': 1836, 'Name': 'Matthew Martinez', 'Birthdate': '1996-06-06'}, {'ID': 1849, 'Name': 'Matthew Mendez MD', 'Birthdate': '1960-01-16'}, {'ID': 1923, 'Name': 'Matthew Thomas', 'Birthdate': '1999-09-20'}, {'ID': 2030, 'Name': 'Matthew Stevens', 'Birthdate': '1987-08-21'}, {'ID': 2059, 'Name': 'Matthew Elliott', 'Birthdate': '1939-08-12'}, {'ID': 2070, 'Name': 'Matthew Williams', 'Birthdate': '1956-07-22'}, {'ID': 2118, 'Name': 'Matthew Henry', 'Birthdate': '1977-06-04'}, {'ID': 2221, 'Name': 'Matthew Thomas', 'Birthdate': '1981-06-12'}, {'ID': 2428, 'Name': 'Matthew Compton', 'Birthdate': '1970-02-25'}, {'ID': 2437, 'Name': 'Matthew Vincent', 'Birthdate': '1966-07-08'}, {'ID': 2445, 'Name': 'Matthew Ramirez', 'Birthdate': '1998-12-23'}, {'ID': 2469, 'Name': 'Matthew Maxwell', 'Birthdate': '1955-01-03'}, {'ID': 2614, 'Name': 'Matthew Ruiz', 'Birthdate': '1997-07-15'}, {'ID': 2624, 'Name': 'Matthew Smith', 'Birthdate': '1952-10-14'}, {'ID': 2719, 'Name': 'Matthew Jackson', 'Birthdate': '1961-07-12'}, {'ID': 2881, 'Name': 'Matthew Sharp', 'Birthdate': '1933-08-28'}, {'ID': 2891, 'Name': 'Matthew Ramirez', 'Birthdate': '1953-01-08'}, {'ID': 3038, 'Name': 'Matthew Cordova', 'Birthdate': '1939-12-23'}, {'ID': 3177, 'Name': 'Matthew Long', 'Birthdate': '1973-11-03'}, {'ID': 3183, 'Name': 'Matthew Lawrence', 'Birthdate': '1992-01-04'}, {'ID': 3240, 'Name': 'Matthew Warner', 'Birthdate': '1945-04-27'}, {'ID': 3502, 'Name': 'Matthew Cabrera', 'Birthdate': '1983-08-12'}, {'ID': 3514, 'Name': 'Matthew Walters', 'Birthdate': '2006-04-24'}, {'ID': 3613, 'Name': 'Matthew Howard', 'Birthdate': '1946-01-12'}, {'ID': 3683, 'Name': 'Matthew Atkinson', 'Birthdate': '1973-02-01'}, {'ID': 3718, 'Name': 'Matthew Cunningham', 'Birthdate': '1938-04-11'}, {'ID': 3799, 'Name': 'Matthew Klein', 'Birthdate': '1990-07-13'}, {'ID': 3912, 'Name': 'Matthew Mcdonald', 'Birthdate': '1958-09-16'}, {'ID': 4024, 'Name': 'Sean Matthews', 'Birthdate': '1946-01-29'}, {'ID': 4109, 'Name': 'Matthew Walker', 'Birthdate': '1947-09-01'}, {'ID': 4149, 'Name': 'Matthew Bell II', 'Birthdate': '2005-10-02'}, {'ID': 4188, 'Name': 'Matthew Powers', 'Birthdate': '1991-01-28'}, {'ID': 4214, 'Name': 'Matthew Williams', 'Birthdate': '1947-01-15'}, {'ID': 4234, 'Name': 'Matthew Haynes', 'Birthdate': '1988-12-16'}, {'ID': 4299, 'Name': 'Matthew Fox', 'Birthdate': '2005-02-15'}, {'ID': 4369, 'Name': 'Matthew Wolfe', 'Birthdate': '1982-02-28'}, {'ID': 4414, 'Name': 'Matthew Salinas', 'Birthdate': '1995-08-30'}, {'ID': 4431, 'Name': 'Matthew Gray', 'Birthdate': '1990-08-22'}, {'ID': 4500, 'Name': 'Matthew Castillo', 'Birthdate': '1943-05-23'}, {'ID': 4683, 'Name': 'Matthew Schmidt', 'Birthdate': '1963-09-13'}, {'ID': 4776, 'Name': 'Matthew Smith', 'Birthdate': '1978-11-28'}, {'ID': 4857, 'Name': 'Matthew Davis', 'Birthdate': '1955-09-19'}, {'ID': 4872, 'Name': 'Matthew Holland', 'Birthdate': '1974-05-20'}, {'ID': 4930, 'Name': 'Matthew Watson', 'Birthdate': '1981-08-17'}, {'ID': 5173, 'Name': 'Matthew Wright', 'Birthdate': '2004-05-16'}, {'ID': 5381, 'Name': 'Matthew Paul', 'Birthdate': '1943-06-13'}, {'ID': 5617, 'Name': 'Matthew Mckee', 'Birthdate': '1987-04-05'}, {'ID': 5657, 'Name': 'Matthew Davis', 'Birthdate': '1972-09-28'}, {'ID': 5707, 'Name': 'Matthew Miller', 'Birthdate': '1946-05-10'}, {'ID': 5868, 'Name': 'Matthew Murray', 'Birthdate': '1990-10-17'}, {'ID': 6148, 'Name': 'Matthew King', 'Birthdate': '1969-03-12'}, {'ID': 6162, 'Name': 'Matthew Allen', 'Birthdate': '1970-01-03'}, {'ID': 6189, 'Name': 'Joseph Matthews', 'Birthdate': '2003-03-11'}, {'ID': 6430, 'Name': 'Erin Matthews', 'Birthdate': '1955-11-06'}, {'ID': 6492, 'Name': 'Matthew Evans', 'Birthdate': '1943-10-05'}, {'ID': 6520, 'Name': 'Matthew Johnston', 'Birthdate': '2003-07-11'}, {'ID': 6585, 'Name': 'Matthew Moore', 'Birthdate': '1941-11-05'}, {'ID': 6659, 'Name': 'Matthew Green', 'Birthdate': '1985-05-07'}, {'ID': 6764, 'Name': 'Matthew Jennings', 'Birthdate': '2001-09-09'}, {'ID': 6944, 'Name': 'Matthew Rose', 'Birthdate': '1977-12-27'}, {'ID': 7112, 'Name': 'Lisa Matthews', 'Birthdate': '2005-10-08'}, {'ID': 7142, 'Name': 'Matthew Swanson', 'Birthdate': '1973-11-08'}, {'ID': 7181, 'Name': 'Matthew Franklin', 'Birthdate': '1973-12-11'}, {'ID': 7186, 'Name': 'Matthew Huang', 'Birthdate': '1950-04-07'}, {'ID': 7298, 'Name': 'Matthew Levy', 'Birthdate': '1981-04-14'}, {'ID': 7348, 'Name': 'Matthew Torres', 'Birthdate': '1940-04-04'}, {'ID': 7410, 'Name': 'Matthew Carter', 'Birthdate': '1960-12-02'}, {'ID': 7418, 'Name': 'Matthew Elliott', 'Birthdate': '1964-03-20'}, {'ID': 7424, 'Name': 'Matthew Johnson', 'Birthdate': '2001-05-12'}, {'ID': 7518, 'Name': 'Gail Matthews', 'Birthdate': '1942-05-13'}, {'ID': 7535, 'Name': 'Anthony Matthews', 'Birthdate': '1965-05-23'}, {'ID': 7633, 'Name': 'Matthew Yang', 'Birthdate': '1988-11-25'}, {'ID': 7698, 'Name': 'Matthew Cole', 'Birthdate': '1956-04-27'}, {'ID': 7704, 'Name': 'Matthew Harris', 'Birthdate': '1933-08-26'}, {'ID': 7803, 'Name': 'Matthew Shepard', 'Birthdate': '1998-07-22'}, {'ID': 7919, 'Name': 'Matthew Bird', 'Birthdate': '1954-04-01'}, {'ID': 7971, 'Name': 'Matthew Harris', 'Birthdate': '1981-01-26'}, {'ID': 8109, 'Name': 'Matthew James', 'Birthdate': '1950-07-10'}, {'ID': 8471, 'Name': 'Matthew Cunningham', 'Birthdate': '1963-05-05'}, {'ID': 8505, 'Name': 'Jennifer Matthews', 'Birthdate': '1955-05-25'}, {'ID': 8525, 'Name': 'Matthew Savage', 'Birthdate': '1942-01-01'}, {'ID': 8549, 'Name': 'Matthew Carter', 'Birthdate': '1967-08-27'}, {'ID': 8556, 'Name': 'Matthew Porter', 'Birthdate': '1934-05-03'}, {'ID': 8564, 'Name': 'Matthew Hunt', 'Birthdate': '2003-05-05'}, {'ID': 8608, 'Name': 'Matthew Maynard', 'Birthdate': '1939-07-24'}, {'ID': 8686, 'Name': 'Matthew Ferguson', 'Birthdate': '1982-04-03'}, {'ID': 8702, 'Name': 'Matthew Lowe', 'Birthdate': '1972-04-14'}, {'ID': 8850, 'Name': 'Rebecca Matthews', 'Birthdate': '1951-01-21'}, {'ID': 8856, 'Name': 'Matthew Deleon', 'Birthdate': '1981-01-22'}, {'ID': 9016, 'Name': 'Matthew Garcia', 'Birthdate': '1993-08-01'}, {'ID': 9245, 'Name': 'Matthew Swanson', 'Birthdate': '1980-09-30'}, {'ID': 9340, 'Name': 'Matthew Griffith', 'Birthdate': '1963-12-20'}, {'ID': 9405, 'Name': 'Matthew Patel', 'Birthdate': '1996-09-17'}, {'ID': 9436, 'Name': 'Matthew Terrell', 'Birthdate': '1977-05-07'}, {'ID': 9505, 'Name': 'Matthew Munoz', 'Birthdate': '1976-04-07'}, {'ID': 9518, 'Name': 'Matthew Sanford', 'Birthdate': '1938-01-03'}, {'ID': 9555, 'Name': 'Matthew Yang', 'Birthdate': '1972-05-15'}, {'ID': 9599, 'Name': 'Matthew Farmer', 'Birthdate': '1999-08-14'}, {'ID': 9691, 'Name': 'Matthew Smith', 'Birthdate': '1982-10-22'}, {'ID': 9702, 'Name': 'Matthew Sanchez', 'Birthdate': '1954-01-01'}, {'ID': 9817, 'Name': 'Matthew Pearson', 'Birthdate': '1996-09-02'}, {'ID': 9866, 'Name': 'Matthew Dixon', 'Birthdate': '1995-12-08'}, {'ID': 9871, 'Name': 'Matthew Smith', 'Birthdate': '1964-11-01'}, {'ID': 9919, 'Name': 'Matthew Montes', 'Birthdate': '1996-02-13'}]
+Rendering template with results and feedback
+127.0.0.1 - - [28/May/2024 19:22:44] "POST / HTTP/1.1" 200 -
+127.0.0.1 - - [28/May/2024 19:22:44] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -

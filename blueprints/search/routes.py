@@ -1,23 +1,11 @@
-"""
-Dieses Modul definiert die Routen für die Such-Blueprints der Flask-Anwendung.
-
-Es enthält Endpunkte für:
-- Die Hauptseite
-- Hochladen und Speichern von ZIP-Dateien
-- Extrahieren von ZIP-Dateien aus einem Verzeichnis
-- Durchführen von Suchanfragen in extrahierten Dateien
-
-Logging wird verwendet, um den Verlauf und eventuelle Fehler zu verfolgen.
-"""
-
-from flask import Blueprint, render_template, request, jsonify, current_app
 import os
 import zipfile
 import json
+from flask import Blueprint, render_template, request, jsonify, current_app
 from werkzeug.utils import secure_filename
+from concurrent.futures import ThreadPoolExecutor
 from .extraction import extract_files_in_directory, analyze_structure, read_schemas
 from .analysis import search_files
-from concurrent.futures import ThreadPoolExecutor
 
 search_bp = Blueprint('search_bp', __name__)
 executor = ThreadPoolExecutor(max_workers=4)  # Anpassung der Anzahl der Worker je nach Systemressourcen
@@ -27,12 +15,6 @@ UPLOAD_FOLDER = 'uploads'
 def save_uploaded_file(file):
     """
     Speichert die hochgeladene Datei im Verzeichnis 'uploads'.
-
-    Args:
-        file (werkzeug.datastructures.FileStorage): Die hochgeladene Datei.
-
-    Returns:
-        str: Der Pfad zur gespeicherten Datei.
     """
     filename = secure_filename(file.filename)
     upload_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -44,13 +26,6 @@ def save_uploaded_file(file):
 def extract_zip_file(zip_path, extract_dir):
     """
     Extrahiert eine ZIP-Datei in ein angegebenes Verzeichnis und gibt eine Liste der extrahierten TXT-Dateien zurück.
-
-    Args:
-        zip_path (str): Der Pfad zur ZIP-Datei.
-        extract_dir (str): Das Verzeichnis, in das die Dateien extrahiert werden sollen.
-
-    Returns:
-        list: Eine Liste der extrahierten TXT-Dateien.
     """
     txt_files = []
     with zipfile.ZipFile(zip_path, 'r') as zip_file:
@@ -63,13 +38,6 @@ def extract_zip_file(zip_path, extract_dir):
 def extract_files_in_directory(directory, extract_to):
     """
     Extrahiert alle ZIP-Dateien in einem Verzeichnis und gibt eine Liste aller extrahierten TXT-Dateien zurück.
-
-    Args:
-        directory (str): Das Verzeichnis, das die ZIP-Dateien enthält.
-        extract_to (str): Das Verzeichnis, in das die Dateien extrahiert werden sollen.
-
-    Returns:
-        list: Eine Liste aller extrahierten TXT-Dateien.
     """
     all_txt_files = []
     for filename in os.listdir(directory):
@@ -81,52 +49,37 @@ def extract_files_in_directory(directory, extract_to):
             all_txt_files.extend(txt_files)
     return all_txt_files
 
-def extract_file_async(file_path, extract_dir):
+def extract_file_async(app, file_path, extract_dir):
     """
     Führt die asynchrone Extraktion der Datei durch.
-
-    Args:
-        file_path (str): Der Pfad zur Datei (ZIP).
-        extract_dir (str): Das Verzeichnis, in das extrahiert werden soll.
-
-    Returns:
-        list: Eine Liste der extrahierten TXT-Dateien.
     """
-    try:
-        txt_files = extract_zip_file(file_path, extract_dir)
-        current_app.logger.info(f'Successfully extracted file: {file_path}')
-        analyze_and_log_structure(extract_dir)
-        return txt_files
-    except Exception as e:
-        current_app.logger.error(f'Exception during file extraction: {e}')
-        return []
+    with app.app_context():
+        try:
+            txt_files = extract_zip_file(file_path, extract_dir)
+            current_app.logger.info(f'Successfully extracted file: {file_path}')
+            analyze_and_log_structure(extract_dir)
+            return txt_files
+        except Exception as e:
+            current_app.logger.error(f'Exception during file extraction: {e}')
+            return []
 
-def extract_directory_async(directory, extract_to):
+def extract_directory_async(app, directory, extract_to):
     """
     Führt die asynchrone Extraktion eines Verzeichnisses mit ZIP-Dateien durch.
-
-    Args:
-        directory (str): Das Verzeichnis, das die ZIP-Dateien enthält.
-        extract_to (str): Das Verzeichnis, in das extrahiert werden soll.
-
-    Returns:
-        list: Eine Liste der extrahierten TXT-Dateien.
     """
-    try:
-        txt_files = extract_files_in_directory(directory, extract_to)
-        current_app.logger.info(f'Successfully extracted directory: {directory}')
-        analyze_and_log_structure(extract_to)
-        return txt_files
-    except Exception as e:
-        current_app.logger.error(f'Exception during directory extraction: {e}')
-        return []
+    with app.app_context():
+        try:
+            txt_files = extract_files_in_directory(directory, extract_to)
+            current_app.logger.info(f'Successfully extracted directory: {directory}')
+            analyze_and_log_structure(extract_to)
+            return txt_files
+        except Exception as e:
+            current_app.logger.error(f'Exception during directory extraction: {e}')
+            return []
 
 def analyze_and_log_structure(extract_dir):
     """
     Analysiert die Struktur der extrahierten Dateien und protokolliert die Schema-Informationen.
-
-    Args:
-        extract_dir (str): Das Verzeichnis mit den extrahierten Dateien.
     """
     try:
         file_structure = analyze_structure(extract_dir)
@@ -150,9 +103,6 @@ def analyze_and_log_structure(extract_dir):
 def index():
     """
     Rendert die Startseite der Anwendung.
-
-    Returns:
-        werkzeug.wrappers.Response: Die gerenderte HTML-Seite.
     """
     current_app.logger.info('Rendering index page.')
     return render_template('index.html')
@@ -161,70 +111,63 @@ def index():
 def upload():
     """
     Endpunkt zum Hochladen und Extrahieren von Dateien (ZIP).
-
-    Returns:
-        werkzeug.wrappers.Response: Eine JSON-Antwort mit dem Ergebnis des Hochladens und Extrahierens.
+    Dieser Endpunkt erkennt automatisch, ob es sich um eine einzelne ZIP-Datei oder ein Verzeichnis handelt.
     """
     files = request.files.getlist('file')
-    all_txt_files = []
-    if files:
-        file_paths = []
-        for file in files:
-            current_app.logger.info(f'Received file: {file.filename}')
-            current_app.logger.info(f'File content type: {file.content_type}')
-            if file.filename.endswith('.zip'):
-                try:
-                    file_path = save_uploaded_file(file)
-                    file_paths.append(file_path)
-                except Exception as e:
-                    current_app.logger.error(f'Exception during file upload: {e}')
-                    return jsonify({"message": "Internal server error."}), 500
-            else:
-                current_app.logger.warning('Invalid file format received.')
-                return jsonify({"message": "Invalid file format."}), 400
-
-        extract_dir = 'temp_extracted'
-        os.makedirs(extract_dir, exist_ok=True)
-
-        # Asynchrone Extraktion aller hochgeladenen ZIP-Dateien und Sammeln aller TXT-Dateien
-        futures = [executor.submit(extract_file_async, file_path, extract_dir) for file_path in file_paths]
-        for future in futures:
-            all_txt_files.extend(future.result())
-
-        return jsonify({"message": "Files uploaded and extraction started.", "txt_files": all_txt_files}), 200
-    else:
+    if not files:
         current_app.logger.warning('No file part in the request.')
         return jsonify({"message": "No file part in the request."}), 400
+
+    file_paths = []
+    for file in files:
+        current_app.logger.info(f'Received file: {file.filename}')
+        if file.filename.endswith('.zip'):
+            try:
+                file_path = save_uploaded_file(file)
+                file_paths.append(file_path)
+            except Exception as e:
+                current_app.logger.error(f'Exception during file upload: {e}')
+                return jsonify({"message": "Internal server error."}), 500
+        else:
+            current_app.logger.warning('Invalid file format received.')
+            return jsonify({"message": "Invalid file format."}), 400
+
+    extract_dir = 'temp_extracted'
+    os.makedirs(extract_dir, exist_ok=True)
+
+    # Asynchrone Extraktion aller hochgeladenen ZIP-Dateien und Sammeln aller TXT-Dateien
+    all_txt_files = []
+    futures = [executor.submit(extract_file_async, current_app._get_current_object(), file_path, extract_dir) for file_path in file_paths]
+    for future in futures:
+        all_txt_files.extend(future.result())
+
+    return jsonify({"message": "Files uploaded and extraction started.", "txt_files": all_txt_files}), 200
 
 @search_bp.route('/upload_directory', methods=['POST'])
 def upload_directory():
     """
     Endpunkt zum Hochladen und Extrahieren eines Verzeichnisses mit ZIP-Dateien.
-
-    Returns:
-        werkzeug.wrappers.Response: Eine JSON-Antwort mit dem Ergebnis des Extrahierens.
     """
-    directory = request.form.get('directory')
-    if directory:
-        current_app.logger.info(f'Received directory path: {directory}')
-        extract_to = os.path.join('temp_extracted', os.path.basename(directory))
-        os.makedirs(extract_to, exist_ok=True)
+    files = request.files.getlist('file')
+    if not files:
+        current_app.logger.warning('No files part in the request.')
+        return jsonify({"message": "No files part in the request."}), 400
 
-        # Asynchrone Extraktion starten
-        future = executor.submit(extract_directory_async, directory, extract_to)
-        txt_files_list = future.result()
-        return jsonify({"message": "Directory extraction started.", "txt_files": txt_files_list}), 200
-    else:
-        current_app.logger.warning('No directory path in the request.')
-        return jsonify({"message": "No directory path in the request."}), 400
+    extract_to = 'temp_extracted'
+    os.makedirs(extract_to, exist_ok=True)
+
+    # Asynchrone Extraktion aller hochgeladenen ZIP-Dateien und Sammeln aller TXT-Dateien
+    all_txt_files = []
+    futures = [executor.submit(extract_file_async, current_app._get_current_object(), save_uploaded_file(file), extract_to) for file in files]
+    for future in futures:
+        all_txt_files.extend(future.result())
+
+    return jsonify({"message": "Files uploaded and extraction started.", "txt_files": all_txt_files}), 200
 
 @search_bp.route('/search', methods=['POST'])
 def search():
     """
     Endpunkt für die Suche in den extrahierten Dateien.
-
-    Returns:
-        werkzeug.wrappers.Response: Eine JSON-Antwort mit den Suchergebnissen.
     """
     query = request.form.get('search_query', '').strip()
     if not query:
@@ -246,9 +189,6 @@ def search():
 def detailed_search():
     """
     Endpunkt für die detaillierte Suche in den extrahierten Dateien.
-
-    Returns:
-        werkzeug.wrappers.Response: Eine JSON-Antwort mit den detaillierten Suchergebnissen.
     """
     first_name = request.form.get('first_name', '').strip()
     last_name = request.form.get('last_name', '').strip()
