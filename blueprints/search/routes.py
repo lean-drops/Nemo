@@ -4,18 +4,15 @@ import json
 from flask import Blueprint, render_template, request, jsonify, current_app
 from werkzeug.utils import secure_filename
 from concurrent.futures import ThreadPoolExecutor
-from .extraction import extract_files_in_directory, analyze_structure, read_schemas
+from .extraction import analyze_structure, read_schemas
 from .analysis import search_files
 
 search_bp = Blueprint('search_bp', __name__)
-executor = ThreadPoolExecutor(max_workers=4)  # Anpassung der Anzahl der Worker je nach Systemressourcen
+executor = ThreadPoolExecutor(max_workers=4)
 
 UPLOAD_FOLDER = 'uploads'
 
 def save_uploaded_file(file):
-    """
-    Speichert die hochgeladene Datei im Verzeichnis 'uploads'.
-    """
     filename = secure_filename(file.filename)
     upload_path = os.path.join(UPLOAD_FOLDER, filename)
     os.makedirs(os.path.dirname(upload_path), exist_ok=True)
@@ -24,9 +21,6 @@ def save_uploaded_file(file):
     return upload_path
 
 def extract_zip_file(zip_path, extract_dir):
-    """
-    Extrahiert eine ZIP-Datei in ein angegebenes Verzeichnis und gibt eine Liste der extrahierten TXT-Dateien zurück.
-    """
     txt_files = []
     with zipfile.ZipFile(zip_path, 'r') as zip_file:
         zip_file.extractall(extract_dir)
@@ -36,23 +30,18 @@ def extract_zip_file(zip_path, extract_dir):
     return txt_files
 
 def extract_files_in_directory(directory, extract_to):
-    """
-    Extrahiert alle ZIP-Dateien in einem Verzeichnis und gibt eine Liste aller extrahierten TXT-Dateien zurück.
-    """
     all_txt_files = []
-    for filename in os.listdir(directory):
-        if filename.endswith('.zip'):
-            file_path = os.path.join(directory, filename)
-            extract_path = os.path.join(extract_to, os.path.splitext(filename)[0])
-            os.makedirs(extract_path, exist_ok=True)
-            txt_files = extract_zip_file(file_path, extract_path)
-            all_txt_files.extend(txt_files)
+    for root, _, files in os.walk(directory):
+        for filename in files:
+            if filename.endswith('.zip'):
+                file_path = os.path.join(root, filename)
+                extract_path = os.path.join(extract_to, os.path.splitext(filename)[0])
+                os.makedirs(extract_path, exist_ok=True)
+                txt_files = extract_zip_file(file_path, extract_path)
+                all_txt_files.extend(txt_files)
     return all_txt_files
 
 def extract_file_async(app, file_path, extract_dir):
-    """
-    Führt die asynchrone Extraktion der Datei durch.
-    """
     with app.app_context():
         try:
             txt_files = extract_zip_file(file_path, extract_dir)
@@ -64,9 +53,6 @@ def extract_file_async(app, file_path, extract_dir):
             return []
 
 def extract_directory_async(app, directory, extract_to):
-    """
-    Führt die asynchrone Extraktion eines Verzeichnisses mit ZIP-Dateien durch.
-    """
     with app.app_context():
         try:
             txt_files = extract_files_in_directory(directory, extract_to)
@@ -78,9 +64,6 @@ def extract_directory_async(app, directory, extract_to):
             return []
 
 def analyze_and_log_structure(extract_dir):
-    """
-    Analysiert die Struktur der extrahierten Dateien und protokolliert die Schema-Informationen.
-    """
     try:
         file_structure = analyze_structure(extract_dir)
         structure_file_path = os.path.join(extract_dir, 'structure.json')
@@ -101,18 +84,11 @@ def analyze_and_log_structure(extract_dir):
 
 @search_bp.route('/')
 def index():
-    """
-    Rendert die Startseite der Anwendung.
-    """
     current_app.logger.info('Rendering index page.')
     return render_template('index.html')
 
 @search_bp.route('/upload', methods=['POST'])
 def upload():
-    """
-    Endpunkt zum Hochladen und Extrahieren von Dateien (ZIP).
-    Dieser Endpunkt erkennt automatisch, ob es sich um eine einzelne ZIP-Datei oder ein Verzeichnis handelt.
-    """
     files = request.files.getlist('file')
     if not files:
         current_app.logger.warning('No file part in the request.')
@@ -135,7 +111,6 @@ def upload():
     extract_dir = 'temp_extracted'
     os.makedirs(extract_dir, exist_ok=True)
 
-    # Asynchrone Extraktion aller hochgeladenen ZIP-Dateien und Sammeln aller TXT-Dateien
     all_txt_files = []
     futures = [executor.submit(extract_file_async, current_app._get_current_object(), file_path, extract_dir) for file_path in file_paths]
     for future in futures:
@@ -145,9 +120,6 @@ def upload():
 
 @search_bp.route('/upload_directory', methods=['POST'])
 def upload_directory():
-    """
-    Endpunkt zum Hochladen und Extrahieren eines Verzeichnisses mit ZIP-Dateien.
-    """
     files = request.files.getlist('file')
     if not files:
         current_app.logger.warning('No files part in the request.')
@@ -156,7 +128,6 @@ def upload_directory():
     extract_to = 'temp_extracted'
     os.makedirs(extract_to, exist_ok=True)
 
-    # Asynchrone Extraktion aller hochgeladenen ZIP-Dateien und Sammeln aller TXT-Dateien
     all_txt_files = []
     futures = [executor.submit(extract_file_async, current_app._get_current_object(), save_uploaded_file(file), extract_to) for file in files]
     for future in futures:
@@ -166,9 +137,6 @@ def upload_directory():
 
 @search_bp.route('/search', methods=['POST'])
 def search():
-    """
-    Endpunkt für die Suche in den extrahierten Dateien.
-    """
     query = request.form.get('search_query', '').strip()
     if not query:
         current_app.logger.warning('Empty search query received.')
@@ -185,11 +153,9 @@ def search():
         current_app.logger.error(f'Exception during search: {e}')
         return jsonify({"message": "Internal server error during search."}), 500
 
+
 @search_bp.route('/detailed_search', methods=['POST'])
 def detailed_search():
-    """
-    Endpunkt für die detaillierte Suche in den extrahierten Dateien.
-    """
     first_name = request.form.get('first_name', '').strip()
     last_name = request.form.get('last_name', '').strip()
     address = request.form.get('address', '').strip()
