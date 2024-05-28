@@ -1,75 +1,134 @@
+"""
+Dieses Skript erstellt umfangreiche SIARD- und ZIP-Dateien zu Testzwecken.
+Die Dateien werden im Verzeichnis '/Users/python/Documents/Tests/Test Siard' gespeichert und der Erstellungsprozess wird im Verzeichnis 'logs' protokolliert.
+"""
+
 import os
 import zipfile
-import pandas as pd
-import dask.dataframe as dd
-from concurrent.futures import ThreadPoolExecutor
-from faker import Faker
-import webbrowser
-import subprocess
 import logging
+import random
+import string
+from logging.handlers import RotatingFileHandler
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from faker import Faker
+import shutil
+
+# Verzeichnisse
+LOG_DIR = 'logs'
+UPLOAD_DIR = '/Users/python/Documents/Tests/Test Siard'
+os.makedirs(LOG_DIR, exist_ok=True)
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Logging-Konfiguration
+logging.basicConfig(level=logging.INFO)
+handler = RotatingFileHandler(os.path.join(LOG_DIR, 'creation.log'), maxBytes=1024*1024*10, backupCount=5)
+formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
+handler.setFormatter(formatter)
+logger = logging.getLogger('creation')
+logger.addHandler(handler)
 
 fake = Faker()
 
-# Logging-Konfiguration
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Beispiel-Automarken und -modelle
+car_brands = [
+    "Toyota Corolla", "Ford Fiesta", "Honda Civic", "Chevrolet Malibu", "BMW 3 Series",
+    "Audi A4", "Mercedes-Benz C-Class", "Volkswagen Golf", "Hyundai Elantra", "Nissan Altima"
+]
 
-def create_large_csv_files(output_dir, num_records=10000):
-    os.makedirs(output_dir, exist_ok=True)
-    logging.info(f'Erstelle Verzeichnis: {output_dir}')
+def random_string(length=8):
+    """Erzeugt einen zufälligen String aus Buchstaben und Zahlen."""
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
-    def generate_data(file_path, num_records):
-        logging.info(f'Starte Daten-Generierung für {file_path}')
-        data = {
-            'ID': list(range(1, num_records + 1)),
-            'Name': [fake.name() for _ in range(num_records)],
-            'Birthdate': [fake.date_of_birth(minimum_age=18, maximum_age=90) for _ in range(num_records)]
-        }
-        df = pd.DataFrame(data)
-        df.to_csv(file_path, index=False)
-        logging.info(f'Daten-Generierung abgeschlossen für {file_path}')
+def create_random_driver_info():
+    """Erzeugt zufällige Autofahrerinformationen."""
+    car = random.choice(car_brands)
+    return {
+        "Vorname": fake.first_name(),
+        "Nachname": fake.last_name(),
+        "Adresse": fake.address().replace("\n", ", "),
+        "Email": fake.email(),
+        "Nummer": fake.phone_number(),
+        "Kennzeichen": random_string(7),
+        "Datum der Prüfung": fake.date(),
+        "Auto Marke und Modell": car,
+        "Geburtstag": fake.date_of_birth().strftime("%Y-%m-%d")
+    }
 
-    futures = []
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        futures.append(executor.submit(generate_data, os.path.join(output_dir, 'person.csv'), num_records))
-        futures.append(executor.submit(generate_data, os.path.join(output_dir, 'address.csv'), num_records))
+def create_dummy_file(file_path):
+    """
+    Erstellt eine Dummy-Datei mit zufälligen Autofahrerinformationen.
 
-    for future in futures:
-        future.result()
-    logging.info('Alle CSV-Dateien wurden erfolgreich erstellt.')
+    Args:
+        file_path (str): Der Pfad zur zu erstellenden Datei.
+    """
+    logger.info(f"Creating dummy file: {file_path}")
+    driver_info = create_random_driver_info()
+    with open(file_path, 'w') as f:
+        for key, value in driver_info.items():
+            f.write(f"{key}: {value}\n")
+    return file_path
 
-def create_siard_file(siard_filename, input_dir):
-    logging.info(f'Starte Erstellung der SIARD-Datei: {siard_filename}')
-    with zipfile.ZipFile(siard_filename, 'w', zipfile.ZIP_DEFLATED) as siard_zip:
-        for root, _, files in os.walk(input_dir):
-            for file in files:
-                file_path = os.path.join(root, file)
-                arcname = os.path.relpath(file_path, input_dir)
-                siard_zip.write(file_path, arcname)
-    logging.info(f'SIARD-Datei "{siard_filename}" wurde erfolgreich erstellt.')
+def create_siard_file_chunked(siard_path, num_files, temp_dir):
+    """
+    Erstellt eine SIARD-Datei mit einer bestimmten Anzahl an Dummy-Dateien.
 
-def start_flask_app():
-    # Flask-Anwendung in einem separaten Prozess starten
-    logging.info('Starte Flask-Anwendung...')
-    subprocess.Popen(['python', 'app.py'])
+    Args:
+        siard_path (str): Der Pfad zur zu erstellenden SIARD-Datei.
+        num_files (int): Die Anzahl der Dummy-Dateien.
+        temp_dir (str): Das temporäre Verzeichnis zur Speicherung der Dummy-Dateien.
+    """
+    logger.info(f"Creating SIARD file: {siard_path} with {num_files} files")
+    with zipfile.ZipFile(siard_path, 'w') as siard_zip:
+        with ThreadPoolExecutor() as executor:
+            futures = []
+            for i in range(num_files):
+                dummy_file_path = os.path.join(temp_dir, f'dummy_file_{random_string()}.txt')
+                futures.append(executor.submit(create_dummy_file, dummy_file_path))
+            for future in as_completed(futures):
+                dummy_file_path = future.result()
+                siard_zip.write(dummy_file_path, os.path.basename(dummy_file_path))
+                os.remove(dummy_file_path)
+
+def create_zip_file_chunked(zip_path, num_files, temp_dir):
+    """
+    Erstellt eine ZIP-Datei mit einer bestimmten Anzahl an Dummy-Dateien.
+
+    Args:
+        zip_path (str): Der Pfad zur zu erstellenden ZIP-Datei.
+        num_files (int): Die Anzahl der Dummy-Dateien.
+        temp_dir (str): Das temporäre Verzeichnis zur Speicherung der Dummy-Dateien.
+    """
+    logger.info(f"Creating ZIP file: {zip_path} with {num_files} files")
+    with zipfile.ZipFile(zip_path, 'w') as zip_file:
+        with ThreadPoolExecutor() as executor:
+            futures = []
+            for i in range(num_files):
+                dummy_file_path = os.path.join(temp_dir, f'dummy_file_{random_string()}.txt')
+                futures.append(executor.submit(create_dummy_file, dummy_file_path))
+            for future in as_completed(futures):
+                dummy_file_path = future.result()
+                zip_file.write(dummy_file_path, os.path.basename(dummy_file_path))
+                os.remove(dummy_file_path)
 
 def main():
-    output_dir = 'test_siard_data'
-    siard_filename = 'test_siard.siard'
+    """
+    Hauptfunktion zum Erstellen von SIARD- und ZIP-Dateien.
+    """
+    siard_path = os.path.join(UPLOAD_DIR, f'test_siard_{random_string()}.siard')
+    zip_path = os.path.join(UPLOAD_DIR, f'test_zip_{random_string()}.zip')
+    num_files = 10000  # Anzahl der Dummy-Dateien
+    temp_dir = os.path.join('temp', random_string())
 
-    # CSV-Dateien erstellen
-    create_large_csv_files(output_dir, num_records=10000)
+    # Sicherstellen, dass das temporäre Verzeichnis existiert
+    os.makedirs(temp_dir, exist_ok=True)
 
-    # SIARD-Datei erstellen
-    create_siard_file(siard_filename, output_dir)
+    # Erstellung der SIARD- und ZIP-Dateien
+    create_siard_file_chunked(siard_path, num_files, temp_dir)
+    create_zip_file_chunked(zip_path, num_files, temp_dir)
 
-    print(f'Test-SIARD-Datei "{siard_filename}" wurde erstellt.')
+    # Bereinigen des temporären Verzeichnisses
+    shutil.rmtree(temp_dir)
+    logger.info("SIARD and ZIP file creation completed.")
 
-    # Flask-Anwendung starten
-    start_flask_app()
-
-    # Browser öffnen
-    webbrowser.open('http://127.0.0.1:5000')
-    logging.info('Webbrowser geöffnet auf http://127.0.0.1:5000')
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

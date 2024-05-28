@@ -1,44 +1,80 @@
+"""
+Dieses Modul enthält Funktionen zur Analyse und Suche in extrahierten Dateien.
+
+Die Hauptfunktion `search_files` durchsucht die Dateien in einem angegebenen Verzeichnis nach einer Abfrage.
+"""
+
 import os
-import pandas as pd
 from flask import current_app
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import json
 
 def read_and_search_file(file_path, query, app):
+    """
+    Liest eine TXT-Datei ein und durchsucht sie nach einer bestimmten Abfrage.
+
+    Args:
+        file_path (str): Der Pfad zur Datei, die durchsucht werden soll.
+        query (str): Die Suchabfrage.
+        app (Flask): Die Flask-Anwendung zur Nutzung des Loggers.
+
+    Returns:
+        list: Eine Liste der gefundenen Ergebnisse als Dictionary.
+    """
+    results = []
     try:
-        df = pd.read_csv(file_path)
-        app.logger.debug(f"Processing file: {file_path} with query: {query}")
+        with open(file_path, 'r') as file:
+            app.logger.debug(f"Processing file: {file_path} with query: {query}")
 
-        # Convert query to lowercase for case-insensitive search
-        query_lower = query.lower()
+            # Suchabfrage in Kleinbuchstaben konvertieren, um Groß-/Kleinschreibung zu ignorieren
+            query_lower = query.lower()
 
-        # Log the first few rows of the dataframe for debugging
-        app.logger.debug(f"First few rows of the dataframe:\n{df.head()}")
+            for line in file:
+                if query_lower in line.lower():
+                    results.append({'file': file_path, 'line': line.strip()})
 
-        # Search for matches in the DataFrame
-        matches = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(query_lower).any(), axis=1)]
+        # Wenn Übereinstimmungen gefunden wurden, diese loggen
+        if results:
+            app.logger.debug(f"Found matches in file: {file_path}\n{results}")
 
-        if not matches.empty:
-            app.logger.debug(f"Found matches in file: {file_path}\n{matches}")
-
-        return [row.to_dict() for _, row in matches.iterrows()]
     except Exception as e:
         with app.app_context():
             app.logger.error(f"Error processing file {file_path}: {e}")
-        return []
 
-def search_siard_files(query, extract_dir, app, max_workers=2):
+    return results
+
+def search_files(query, extract_dir, app, max_workers=2):
+    """
+    Durchsucht alle TXT-Dateien in einem angegebenen Verzeichnis nach einer bestimmten Abfrage.
+
+    Args:
+        query (str): Die Suchabfrage.
+        extract_dir (str): Das Verzeichnis, in dem gesucht werden soll.
+        app (Flask): Die Flask-Anwendung zur Nutzung des Loggers.
+        max_workers (int): Die maximale Anzahl der parallelen Worker.
+
+    Returns:
+        list: Eine Liste der gefundenen Ergebnisse als Dictionary.
+    """
     results = []
     query = query.lower()
 
     app.logger.debug(f"Starting search in directory: {extract_dir} with query: {query}")
 
     try:
-        file_paths = [os.path.join(root, file)
-                      for root, _, files in os.walk(extract_dir)
-                      for file in files if file.endswith('.csv')]
+        # Pfad zur Strukturdatei ermitteln
+        structure_file_path = os.path.join(extract_dir, 'structure.json')
+        with open(structure_file_path, 'r') as f:
+            file_structure = json.load(f)
 
-        app.logger.debug(f"Found CSV files: {file_paths}")
+        # Alle TXT-Dateipfade im Verzeichnis und Unterverzeichnissen ermitteln
+        file_paths = [os.path.join(extract_dir, root, file)
+                      for root, details in file_structure.items()
+                      for file in details['files'] if file.endswith('.txt')]
 
+        app.logger.debug(f"Found TXT files: {file_paths}")
+
+        # Parallelisierte Suche in den TXT-Dateien
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {executor.submit(read_and_search_file, file_path, query, app): file_path for file_path in file_paths}
 
@@ -49,7 +85,7 @@ def search_siard_files(query, extract_dir, app, max_workers=2):
                     results.extend(file_results)
     except Exception as e:
         with app.app_context():
-            app.logger.error(f"Error searching SIARD files: {e}")
+            app.logger.error(f"Error searching files: {e}")
 
     app.logger.debug(f"Total results found: {len(results)}")
     return results

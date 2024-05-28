@@ -1,62 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIARD Search</title>
+    <title>SIARD-Suche</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
     <div class="container mt-5">
         <div class="card">
-            <div class="card-header">
-                <h1>Search in SIARD File</h1>
+            <div class="card-header text-center">
+                <h1>SIARD-Datei durchsuchen</h1>
             </div>
             <div class="card-body">
-                <form method="post" action="/" enctype="multipart/form-data">
+                <!-- Upload Form -->
+                <form id="upload-form" method="post" action="/upload" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="first_name">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name">
+                        <label for="file">SIARD- oder ZIP-Datei hochladen</label>
+                        <input type="file" class="form-control-file" id="file" name="file" required>
                     </div>
-                    <div class="form-group">
-                        <label for="last_name">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter last name">
-                    </div>
-                    <div class="form-group">
-                        <label for="age">Age</label>
-                        <input type="text" class="form-control" id="age" name="age" placeholder="Enter age">
-                    </div>
-                    <div class="form-check mb-3">
-                        <input type="checkbox" class="form-check-input" id="use_default" name="use_default">
-                        <label class="form-check-label" for="use_default">Use default SIARD file (tests/test_siard.siard)</label>
-                    </div>
-                    <div class="form-group">
-                        <label for="siard_file">Upload SIARD file</label>
-                        <input type="file" class="form-control-file" id="siard_file" name="siard_file">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Search</button>
+                    <button type="submit" class="btn btn-primary btn-block">Hochladen</button>
                 </form>
-                {% if feedback %}
-                <div class="alert alert-info mt-3">
-                    <p>{{ feedback }}</p>
+                <div id="upload-progress" class="progress mt-3" style="display:none;">
+                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0;"></div>
                 </div>
-                {% endif %}
-                {% if results %}
-                <div class="results mt-4">
-                    <h2>Results:</h2>
-                    <ul class="list-group">
-                        {% for result in results %}
-                        <li class="list-group-item">{{ result }}</li>
-                        {% endfor %}
+                <div id="upload-feedback" class="alert mt-3" style="display:none;"></div>
+                <!-- Search Section -->
+                <div id="search-section" style="display:none;">
+                    <form id="search-form" method="post" action="/search">
+                        <div class="form-group mt-3">
+                            <label for="search_query">Suchbegriff</label>
+                            <input type="text" class="form-control" id="search_query" name="search_query" placeholder="Adresse, Name, etc." required>
+                        </div>
+                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#detailed-search">Detaillierte Suche</button>
+                        <div id="detailed-search" class="collapse">
+                            <div class="form-group">
+                                <label for="first_name">Vorname</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Vorname">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Nachname</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Nachname">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Adresse</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Adresse">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Nummer</label>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Telefonnummer">
+                            </div>
+                            <div class="form-group">
+                                <label for="license_plate">Kennzeichen</label>
+                                <input type="text" class="form-control" id="license_plate" name="license_plate" placeholder="Kennzeichen">
+                            </div>
+                            <div class="form-group">
+                                <label for="inspection_date">Datum der Prüfung</label>
+                                <input type="date" class="form-control" id="inspection_date" name="inspection_date" placeholder="Datum der Prüfung">
+                            </div>
+                            <div class="form-group">
+                                <label for="car_model">Auto Marke und Modell</label>
+                                <input type="text" class="form-control" id="car_model" name="car_model" placeholder="Auto Marke und Modell">
+                            </div>
+                            <div class="form-group">
+                                <label for="birth_date">Geburtstag</label>
+                                <input type="date" class="form-control" id="birth_date" name="birth_date" placeholder="Geburtstag">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Suchen</button>
+                    </form>
+                </div>
+                <!-- Feedback Section -->
+                <div id="search-feedback" class="alert mt-3" style="display:none;"></div>
+                <!-- Results Section -->
+                <div id="results-section" style="display:none;">
+                    <h2>Ergebnisse:</h2>
+                    <ul class="list-group" id="results-list">
+                        <!-- Ergebnisse werden hier eingefügt -->
                     </ul>
                 </div>
-                {% endif %}
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" role="dialog" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel">Suchergebnisse</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group" id="modal-results">
+                        <!-- Ergebnisse werden hier eingefügt -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#upload-form').submit(function(event) {
+                event.preventDefault();
+                var formData = new FormData(this);
+                $('#upload-progress').show();
+                $.ajax({
+                    xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total * 100;
+                                $('#progress-bar').css('width', percentComplete + '%');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'POST',
+                    url: '/upload',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#upload-progress').hide();
+                        $('#upload-feedback').removeClass('alert-danger').addClass('alert-success').text(response.message).show();
+                        $('#search-section').show();
+                    },
+                    error: function(response) {
+                        $('#upload-progress').hide();
+                        $('#upload-feedback').removeClass('alert-success').addClass('alert-danger').text(response.responseJSON.message).show();
+                    }
+                });
+            });
+
+            $('#search-form').submit(function(event) {
+                event.preventDefault();
+                $.post('/search', $(this).serialize(), function(data) {
+                    var results = data.results;
+                    $('#results-list').empty();
+                    if (results.length > 0) {
+                        results.forEach(function(result) {
+                            $('#results-list').append('<li class="list-group-item">' + result + '</li>');
+                        });
+                        $('#results-section').show();
+                        $('#search-feedback').removeClass('alert-danger').addClass('alert-success').text('Ergebnisse gefunden.').show();
+                    } else {
+                        $('#results-section').hide();
+                        $('#search-feedback').removeClass('alert-success').addClass('alert-info').text('Keine Ergebnisse gefunden.').show();
+                    }
+                    $('#resultsModal').modal('show');
+                }).fail(function(response) {
+                    $('#search-feedback').removeClass('alert-success').addClass('alert-danger').text('Fehler bei der Suche.').show();
+                });
+            });
+        });
+    </script>
 </body>
+
 </html>
