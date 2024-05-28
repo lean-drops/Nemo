@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Top Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Archiv-Suche</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Startseite</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Über</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Kontakt</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <div class="card">
             <div class="card-header text-center">
@@ -61,13 +82,6 @@
                 </div>
                 <!-- Feedback Section -->
                 <div id="search-feedback" class="alert mt-3" style="display:none;"></div>
-                <!-- Results Section -->
-                <div id="results-section" style="display:none;">
-                    <h2>Ergebnisse:</h2>
-                    <ul class="list-group" id="results-list">
-                        <!-- Ergebnisse werden hier eingefügt -->
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -92,79 +106,75 @@
             </div>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#upload-form').submit(function(event) {
-            event.preventDefault();
-            var formData = new FormData(this);
-            var files = $('#file')[0].files;
+    <script>
+        $(document).ready(function() {
+            $('#upload-form').submit(function(event) {
+                event.preventDefault();
+                var formData = new FormData(this);
+                var files = $('#file')[0].files;
 
-            $('#upload-progress').show();
-            $.ajax({
-                xhr: function() {
-                    var xhr = new window.XMLHttpRequest();
-                    xhr.upload.addEventListener('progress', function(evt) {
-                        if (evt.lengthComputable) {
-                            var percentComplete = evt.loaded / evt.total * 100;
-                            $('#progress-bar').css('width', percentComplete + '%');
-                        }
-                    }, false);
-                    return xhr;
-                },
-                type: 'POST',
-                url: '/upload_directory',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    $('#upload-progress').hide();
-                    $('#upload-feedback').removeClass('alert-danger').addClass('alert-success').text(response.message).show();
-                    $('#search-section').show();
-                },
-                error: function(response) {
-                    $('#upload-progress').hide();
-                    $('#upload-feedback').removeClass('alert-success').addClass('alert-danger').text(response.responseJSON.message).show();
-                }
+                $('#upload-progress').show();
+                $.ajax({
+                    xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total * 100;
+                                $('#progress-bar').css('width', percentComplete + '%');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'POST',
+                    url: '/upload_directory',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#upload-progress').hide();
+                        $('#upload-feedback').removeClass('alert-danger').addClass('alert-success').text(response.message).show();
+                        $('#search-section').show();
+                    },
+                    error: function(response) {
+                        $('#upload-progress').hide();
+                        $('#upload-feedback').removeClass('alert-success').addClass('alert-danger').text(response.responseJSON.message).show();
+                    }
+                });
             });
-        });
 
-        $('#search-form').submit(function(event) {
-            event.preventDefault();
-            $.post('/search', $(this).serialize(), function(data) {
-                var results = data.results;
-                $('#results-list').empty();
-                if (results.length > 0) {
-                    results.forEach(function(result) {
-                        var resultItem = formatResult(result);
-                        $('#results-list').append('<li class="list-group-item">' + resultItem + '</li>');
-                    });
-                    $('#results-section').show();
-                    $('#search-feedback').removeClass('alert-danger').addClass('alert-success').text('Ergebnisse gefunden.').show();
-                } else {
-                    $('#results-section').hide();
-                    $('#search-feedback').removeClass('alert-success').addClass('alert-info').text('Keine Ergebnisse gefunden.').show();
-                }
-                $('#resultsModal').modal('show');
-            }).fail(function(response) {
-                $('#search-feedback').removeClass('alert-success').addClass('alert-danger').text('Fehler bei der Suche.').show();
+            $('#search-form').submit(function(event) {
+                event.preventDefault();
+                $.post('/search', $(this).serialize(), function(data) {
+                    var results = data.results;
+                    $('#modal-results').empty();
+                    if (results.length > 0) {
+                        results.forEach(function(result) {
+                            var resultItem = formatResult(result);
+                            $('#modal-results').append('<li class="list-group-item">' + resultItem + '</li>');
+                        });
+                    } else {
+                        $('#modal-results').append('<li class="list-group-item">Keine Ergebnisse gefunden.</li>');
+                    }
+                    $('#resultsModal').modal('show');
+                }).fail(function(response) {
+                    $('#search-feedback').removeClass('alert-success').addClass('alert-danger').text('Fehler bei der Suche.').show();
+                });
             });
-        });
 
-        function formatResult(result) {
-            // Annahme: Das Ergebnis ist ein Objekt mit verschiedenen Attributen.
-            var formattedResult = "";
-            for (var key in result) {
-                if (result.hasOwnProperty(key)) {
-                    formattedResult += key + ": " + result[key] + "<br>";
+            function formatResult(result) {
+                var formattedResult = "";
+                for (var key in result) {
+                    if (result.hasOwnProperty(key)) {
+                        formattedResult += key + ": " + result[key] + "<br>";
+                    }
                 }
+                return formattedResult;
             }
-            return formattedResult;
-        }
-    });
-</script>
-
+        });
+    </script>
 </body>
 </html>

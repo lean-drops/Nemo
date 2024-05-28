@@ -1,56 +1,85 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap');
 
+/* Globaler Stil für das gesamte Dokument */
 body {
-    background-color: #f4f6f9;
-    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    font-size: 14px; /* Verkleinerte Hauptschriftgröße */
-    color: #333;
+    font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Schöne und moderne Schriftart setzen */
+    height: 100vh; /* Höhe des Viewports verwenden */
+    display: flex; /* Flexbox-Layout für das Body-Element */
+    flex-direction: column; /* Flex-Elemente vertikal anordnen */
+    background-color: #fff; /* Hintergrundfarbe setzen */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), /* Transparente Farbe über das Hintergrundbild legen */
+        url('../img/background.png'),
+        linear-gradient(transparent 50%, rgba(255, 255, 255, 0.7) 50%),
+        linear-gradient(90deg, transparent 50%, rgba(255, 255, 255, 0.7) 50%); /* Transparente Flächen für Schachbrettmuster */
+    background-repeat: repeat, repeat, repeat, repeat; /* Hintergrundbilder kacheln */
+    background-position: 0 0, 0 0, 0 0, 0 0; /* Hintergrundbilder ausrichten */
+    background-size: 50px 50px, 100px 100px, 100px 100px, 100px 100px; /* Größe der Kacheln anpassen */
+    color: #333; /* Textfarbe setzen */
+    line-height: 1.6; /* Angenehme Zeilenhöhe */
 }
+
 
 .navbar {
-    background-color: #5a6268;
-    color: white;
-    padding: 10px 20px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    transition: top 0.3s;
+    background-color: #007bff; /* Helleres Blau für die Navbar */
+    color: white; /* Weißer Text */
+    padding: 10px 20px; /* Innenabstand */
+    position: fixed; /* Fixiert die Navbar am oberen Rand */
+    top: 0; /* Abstand vom oberen Rand */
+    width: 100%; /* Volle Breite */
+    z-index: 1000; /* Z-Index für Überlagerung */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Schatteneffekt */
+    transition: top 0.3s; /* Weicher Übergangseffekt */
 }
 
-.navbar h1 {
-    font-size: 1.5em; /* Angemessene Schriftgröße für die Top-Bar */
-    margin: 0;
-    font-weight: 600;
+.navbar-brand {
+    font-weight: 600; /* Fettgedruckter Text */
+    font-size: 1.5em; /* Größere Schriftgröße für den Markennamen */
+    color: white; /* Weiße Schriftfarbe */
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #131111; /* Weiße Schriftfarbe */
+    font-weight: 600; /* Fettgedruckter Text */
+    margin-left: 15px; /* Abstand zwischen den Links */
+    transition: color 0.3s; /* Weicher Farbwechsel-Effekt */
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    color: #d1ecf1; /* Hellere Farbe beim Überfahren */
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .navbar-nav .nav-item .nav-link {
+        margin-left: 0; /* Kein Abstand zwischen den Links bei kleinen Bildschirmen */
+        padding: 10px 0; /* Vertikaler Abstand für bessere Klickbarkeit */
+        text-align: center; /* Zentrierte Links */
+    }
 }
 
 .container {
-    margin-top: 80px; /* Platz für die Top-Bar */
+    margin-top: 80px; /* Mehr Abstand von der Top-Bar */
+    margin-bottom: 50px; /* Abstand am unteren Rand */
 }
 
 .card {
+    margin-top: 45px;
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    transition: transform 0.3s, box-shadow 0.3s;
     padding: 20px;
-}
-
-.card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 .card-header {
-    background-color: #5a6268;
+    background-color: #003d7c;
     color: white;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     padding: 15px;
-    font-weight: 600;
-    font-size: 1em; /* Kleinere Schriftgröße */
+    font-weight: 500;
+    font-size: 0.8rem; /* Angemessene Schriftgröße */
     text-align: center;
 }
 
@@ -59,8 +88,8 @@ body {
 }
 
 .btn-primary {
-    background-color: #5a6268;
-    border-color: #5a6268;
+    background-color: #003d7c;
+    border-color: rgba(0, 61, 124, 0.66);
     border-radius: 20px;
     padding: 10px 20px;
     transition: background-color 0.3s, transform 0.3s;
@@ -70,12 +99,12 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #495057;
+    background-color: #02682a;
     transform: translateY(-2px);
 }
 
 .btn-link {
-    color: #5a6268;
+    color: rgba(0, 61, 124, 0.66);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s, text-decoration 0.3s;
@@ -83,7 +112,7 @@ body {
 }
 
 .btn-link:hover {
-    color: #495057;
+    color: rgba(0, 61, 124, 0.73);
     text-decoration: underline;
 }
 
@@ -98,8 +127,8 @@ body {
 }
 
 .form-control:focus, .form-control-file:focus {
-    border-color: #5a6268;
-    box-shadow: 0 0 5px rgba(90, 98, 104, 0.5);
+    border-color: rgba(0, 61, 124, 0.66);
+    box-shadow: 0 0 5px rgba(0, 61, 124, 0.66);
 }
 
 .progress {
@@ -111,7 +140,7 @@ body {
 }
 
 .progress-bar {
-    background-color: #5a6268;
+    background-color: #02682a;
     transition: width 0.6s ease;
 }
 
@@ -123,13 +152,13 @@ body {
 
 .modal-header {
     border-bottom: none;
-    background-color: #5a6268;
+    background-color: #007bff;
     color: white;
     padding: 15px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     font-weight: 600;
-    font-size: 1em; /* Kleinere Schriftgröße */
+    font-size: 1.1em; /* Angemessene Schriftgröße */
 }
 
 .modal-footer {
@@ -162,4 +191,18 @@ body {
     background-color: #cce5ff;
     border-color: #b8daff;
     color: #004085;
+}
+
+.list-group-item {
+    font-size: 0.9em;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
 }
