@@ -2,8 +2,7 @@
 Dieses Modul enthält Funktionen zum Extrahieren von ZIP-Dateien, zur Analyse der extrahierten Dateien
 und zur Korrektur von Tippfehlern in den extrahierten Daten.
 
-Die Hauptfunktion `extract_file` extrahiert den Inhalt einer Datei (ZIP) in ein angegebenes Verzeichnis und
-liest die Schema-Informationen aus den extrahierten TXT-Dateien.
+Die Hauptfunktion `extract_file` extrahiert den Inhalt einer ZIP-Datei in ein Zielverzeichnis und liest die Schema-Informationen aus den extrahierten TXT-Dateien.
 """
 
 import zipfile
@@ -29,33 +28,29 @@ EXPECTED_SCHEMAS = {
     "Fzhist": ["STAMM", "HISTNR", "Kennzeichen", "Farbe", "Motorleistung", "Kilometerstand", "Änderungsdatum"],
 }
 
-def extract_files_in_directory(directory, extract_to):
+def extract_file(file_path, extract_to):
     """
-    Extrahiert den Inhalt aller ZIP-Dateien in einem angegebenen Verzeichnis in ein Zielverzeichnis
-    und liest die Schema-Informationen aus den extrahierten TXT-Dateien.
+    Extrahiert den Inhalt einer ZIP-Datei in ein Zielverzeichnis und liest die Schema-Informationen aus den extrahierten TXT-Dateien.
 
     Args:
-        directory (str): Das Verzeichnis, das die ZIP-Dateien enthält.
+        file_path (str): Der Pfad zur ZIP-Datei.
         extract_to (str): Das Verzeichnis, in das die Dateien extrahiert werden sollen.
 
     Returns:
         bool: True, wenn die Extraktion erfolgreich war, False bei einem Fehler.
     """
     try:
-        current_app.logger.info(f"Starting extraction of all ZIP files in directory: {directory} to {extract_to}")
+        current_app.logger.info(f"Starting extraction of file: {file_path} to {extract_to}")
 
+        # Überprüfen, ob das Zielverzeichnis existiert, und ggf. erstellen
         if not os.path.exists(extract_to):
             os.makedirs(extract_to)
             current_app.logger.debug(f"Created extraction directory: {extract_to}")
 
-        for filename in os.listdir(directory):
-            if filename.endswith('.zip'):
-                file_path = os.path.join(directory, filename)
-                extract_path = os.path.join(extract_to, filename.replace('.zip', ''))
-                os.makedirs(extract_path, exist_ok=True)
-                with zipfile.ZipFile(file_path, 'r') as zip_file:
-                    zip_file.extractall(extract_path)
-                    current_app.logger.info(f"Successfully extracted ZIP file: {file_path} to {extract_path}")
+        # ZIP-Datei extrahieren
+        with zipfile.ZipFile(file_path, 'r') as zip_file:
+            zip_file.extractall(extract_to)
+            current_app.logger.info(f"Successfully extracted ZIP file to: {extract_to}")
 
         # Analysiere die Struktur der extrahierten Dateien und speichere sie
         file_structure = analyze_structure(extract_to)

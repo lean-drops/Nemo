@@ -1,134 +1,118 @@
 """
-Dieses Skript erstellt umfangreiche SIARD- und ZIP-Dateien zu Testzwecken.
-Die Dateien werden im Verzeichnis '/Users/python/Documents/Tests/Test Siard' gespeichert und der Erstellungsprozess wird im Verzeichnis 'logs' protokolliert.
+Dieses Skript erstellt ein Verzeichnis mit 17 ZIP-Dateien, um die Extraktions- und Suchfunktionen zu testen.
+
+Jede ZIP-Datei enthält Daten im Format der Viacar-Tabellen, wie in der Beschreibung angegeben.
 """
 
-import os
 import zipfile
-import logging
-import random
-import string
-from logging.handlers import RotatingFileHandler
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import os
+import pandas as pd
 from faker import Faker
-import shutil
-
-# Verzeichnisse
-LOG_DIR = 'logs'
-UPLOAD_DIR = '/Users/python/Documents/Tests/Test Siard'
-os.makedirs(LOG_DIR, exist_ok=True)
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+import logging
 
 # Logging-Konfiguration
-logging.basicConfig(level=logging.INFO)
-handler = RotatingFileHandler(os.path.join(LOG_DIR, 'creation.log'), maxBytes=1024*1024*10, backupCount=5)
-formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger('creation')
-logger.addHandler(handler)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
 
 fake = Faker()
 
-# Beispiel-Automarken und -modelle
-car_brands = [
-    "Toyota Corolla", "Ford Fiesta", "Honda Civic", "Chevrolet Malibu", "BMW 3 Series",
-    "Audi A4", "Mercedes-Benz C-Class", "Volkswagen Golf", "Hyundai Elantra", "Nissan Altima"
-]
+EXPECTED_SCHEMAS = {
+    "Person": ["PIN", "Name", "Vorname", "Geburtsdatum", "Adresse"],
+    "PersonHist": ["PIN", "HISTNR", "Name", "Vorname", "Geburtsdatum", "Adresse", "Änderungsdatum"],
+    "Ausweis": ["ID", "PIN", "Ausweisnummer", "Ausstellungsdatum", "Gültigkeitsdatum"],
+    "Ausweishist": ["ID", "HISTNR", "Ausweisnummer", "Ausstellungsdatum", "Gültigkeitsdatum", "Änderungsdatum"],
+    "Ausweiskat": ["ID", "AUSWEISID", "Kategorie"],
+    "Ausweiskathist": ["ID", "HISTNR", "Kategorie", "Änderungsdatum"],
+    "Fzausweis": ["ID", "STAMM", "PIN", "Fahrzeugausweisnummer", "Ausstellungsdatum", "Gültigkeitsdatum"],
+    "Fzausweishist": ["ID", "HISTNR", "Fahrzeugausweisnummer", "Ausstellungsdatum", "Gültigkeitsdatum", "Änderungsdatum"],
+    "Fzallgemein": ["STAMM", "Fahrzeugtyp", "Hersteller", "Modell", "Baujahr"],
+    "Fzallgemeinhist": ["STAMM", "HISTNR", "Fahrzeugtyp", "Hersteller", "Modell", "Baujahr", "Änderungsdatum"],
+    "FZ": ["STAMM", "Kennzeichen", "Farbe", "Motorleistung", "Kilometerstand"],
+    "Fzhist": ["STAMM", "HISTNR", "Kennzeichen", "Farbe", "Motorleistung", "Kilometerstand", "Änderungsdatum"],
+}
 
-def random_string(length=8):
-    """Erzeugt einen zufälligen String aus Buchstaben und Zahlen."""
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-
-def create_random_driver_info():
-    """Erzeugt zufällige Autofahrerinformationen."""
-    car = random.choice(car_brands)
-    return {
-        "Vorname": fake.first_name(),
-        "Nachname": fake.last_name(),
-        "Adresse": fake.address().replace("\n", ", "),
-        "Email": fake.email(),
-        "Nummer": fake.phone_number(),
-        "Kennzeichen": random_string(7),
-        "Datum der Prüfung": fake.date(),
-        "Auto Marke und Modell": car,
-        "Geburtstag": fake.date_of_birth().strftime("%Y-%m-%d")
-    }
-
-def create_dummy_file(file_path):
+def create_txt_file(file_path, schema, num_rows=100):
     """
-    Erstellt eine Dummy-Datei mit zufälligen Autofahrerinformationen.
+    Erstellt eine TXT-Datei mit zufälligen Daten gemäß dem angegebenen Schema.
 
     Args:
         file_path (str): Der Pfad zur zu erstellenden Datei.
+        schema (list): Eine Liste der Spaltennamen.
+        num_rows (int): Die Anzahl der Zeilen, die erstellt werden sollen.
     """
-    logger.info(f"Creating dummy file: {file_path}")
-    driver_info = create_random_driver_info()
-    with open(file_path, 'w') as f:
-        for key, value in driver_info.items():
-            f.write(f"{key}: {value}\n")
-    return file_path
+    logger.debug(f"Creating TXT file at: {file_path} with schema: {schema}")
+    data = []
+    for _ in range(num_rows):
+        row = []
+        for col in schema:
+            if col in ["PIN", "ID", "STAMM"]:
+                row.append(fake.uuid4())
+            elif col in ["Name", "Vorname", "Hersteller", "Modell", "Kategorie", "Fahrzeugtyp", "Kennzeichen", "Farbe"]:
+                row.append(fake.word())
+            elif col in ["Geburtsdatum", "Ausstellungsdatum", "Gültigkeitsdatum", "Änderungsdatum", "Baujahr"]:
+                row.append(fake.date())
+            elif col == "Adresse":
+                row.append(fake.address())
+            elif col in ["Ausweisnummer", "Fahrzeugausweisnummer"]:
+                row.append(fake.bothify(text='??######'))
+            elif col in ["Motorleistung", "Kilometerstand"]:
+                row.append(fake.random_int(min=0, max=100000))
+            else:
+                row.append(fake.word())
+        data.append(row)
 
-def create_siard_file_chunked(siard_path, num_files, temp_dir):
-    """
-    Erstellt eine SIARD-Datei mit einer bestimmten Anzahl an Dummy-Dateien.
+    df = pd.DataFrame(data, columns=schema)
+    df.to_csv(file_path, sep="\t", index=False)
+    logger.debug(f"Finished creating TXT file at: {file_path}")
 
-    Args:
-        siard_path (str): Der Pfad zur zu erstellenden SIARD-Datei.
-        num_files (int): Die Anzahl der Dummy-Dateien.
-        temp_dir (str): Das temporäre Verzeichnis zur Speicherung der Dummy-Dateien.
+def create_large_zip(zip_path, num_files=5, num_rows=100):
     """
-    logger.info(f"Creating SIARD file: {siard_path} with {num_files} files")
-    with zipfile.ZipFile(siard_path, 'w') as siard_zip:
-        with ThreadPoolExecutor() as executor:
-            futures = []
-            for i in range(num_files):
-                dummy_file_path = os.path.join(temp_dir, f'dummy_file_{random_string()}.txt')
-                futures.append(executor.submit(create_dummy_file, dummy_file_path))
-            for future in as_completed(futures):
-                dummy_file_path = future.result()
-                siard_zip.write(dummy_file_path, os.path.basename(dummy_file_path))
-                os.remove(dummy_file_path)
-
-def create_zip_file_chunked(zip_path, num_files, temp_dir):
-    """
-    Erstellt eine ZIP-Datei mit einer bestimmten Anzahl an Dummy-Dateien.
+    Erstellt eine große ZIP-Datei mit mehreren TXT-Dateien.
 
     Args:
         zip_path (str): Der Pfad zur zu erstellenden ZIP-Datei.
-        num_files (int): Die Anzahl der Dummy-Dateien.
-        temp_dir (str): Das temporäre Verzeichnis zur Speicherung der Dummy-Dateien.
+        num_files (int): Die Anzahl der TXT-Dateien, die erstellt werden sollen.
+        num_rows (int): Die Anzahl der Zeilen pro Datei.
     """
-    logger.info(f"Creating ZIP file: {zip_path} with {num_files} files")
-    with zipfile.ZipFile(zip_path, 'w') as zip_file:
-        with ThreadPoolExecutor() as executor:
-            futures = []
-            for i in range(num_files):
-                dummy_file_path = os.path.join(temp_dir, f'dummy_file_{random_string()}.txt')
-                futures.append(executor.submit(create_dummy_file, dummy_file_path))
-            for future in as_completed(futures):
-                dummy_file_path = future.result()
-                zip_file.write(dummy_file_path, os.path.basename(dummy_file_path))
-                os.remove(dummy_file_path)
+    logger.debug(f"Creating ZIP file at: {zip_path} with {num_files} TXT files, each with {num_rows} rows")
+    schemas = list(EXPECTED_SCHEMAS.values())
+    os.makedirs(os.path.dirname(zip_path), exist_ok=True)
 
-def main():
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for i in range(num_files):
+            schema = schemas[i % len(schemas)]
+            file_name = f"{fake.word()}_{i+1}.txt"
+            file_path = os.path.join("/tmp", file_name)
+            logger.debug(f"Creating TXT file {file_name} for ZIP {zip_path}")
+            create_txt_file(file_path, schema, num_rows)
+            zipf.write(file_path, file_name)
+            os.remove(file_path)
+            logger.debug(f"Added TXT file {file_name} to ZIP {zip_path}")
+    logger.debug(f"Finished creating ZIP file at: {zip_path}")
+
+def create_zip_directory(directory, num_zips=17, num_files_per_zip=5, num_rows_per_file=100):
     """
-    Hauptfunktion zum Erstellen von SIARD- und ZIP-Dateien.
+    Erstellt ein Verzeichnis mit mehreren ZIP-Dateien.
+
+    Args:
+        directory (str): Das Verzeichnis, das die ZIP-Dateien enthalten soll.
+        num_zips (int): Die Anzahl der zu erstellenden ZIP-Dateien.
+        num_files_per_zip (int): Die Anzahl der Dateien pro ZIP-Datei.
+        num_rows_per_file (int): Die Anzahl der Zeilen pro Datei.
     """
-    siard_path = os.path.join(UPLOAD_DIR, f'test_siard_{random_string()}.siard')
-    zip_path = os.path.join(UPLOAD_DIR, f'test_zip_{random_string()}.zip')
-    num_files = 10000  # Anzahl der Dummy-Dateien
-    temp_dir = os.path.join('temp', random_string())
+    logger.debug(f"Creating directory {directory} with {num_zips} ZIP files")
+    os.makedirs(directory, exist_ok=True)
 
-    # Sicherstellen, dass das temporäre Verzeichnis existiert
-    os.makedirs(temp_dir, exist_ok=True)
+    for i in range(num_zips):
+        zip_path = os.path.join(directory, f"zipfile_{i+1}.zip")
+        logger.debug(f"Creating ZIP file {zip_path}")
+        create_large_zip(zip_path, num_files=num_files_per_zip, num_rows=num_rows_per_file)
+        logger.debug(f"Finished creating ZIP file {zip_path}")
+    logger.debug(f"Finished creating all ZIP files in directory {directory}")
 
-    # Erstellung der SIARD- und ZIP-Dateien
-    create_siard_file_chunked(siard_path, num_files, temp_dir)
-    create_zip_file_chunked(zip_path, num_files, temp_dir)
-
-    # Bereinigen des temporären Verzeichnisses
-    shutil.rmtree(temp_dir)
-    logger.info("SIARD and ZIP file creation completed.")
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    directory_path = "/Users/python/Documents/Tests/Test_Siard_Zips"
+    logger.debug(f"Starting creation of test ZIP directory at {directory_path}")
+    create_zip_directory(directory_path, num_zips=17, num_files_per_zip=5, num_rows_per_file=100)
+    logger.debug(f"Created test ZIP directory at {directory_path}")
+    print(f"Created test ZIP directory at {directory_path}")
