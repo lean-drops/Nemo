@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIARD Search</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1>Search in SIARD File</h1>
+            </div>
+            <div class="card-body">
+                <form method="post" action="/" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="text" class="form-control" id="age" name="age" placeholder="Enter age">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="use_default" name="use_default">
+                        <label class="form-check-label" for="use_default">Use default SIARD file (tests/test_siard.siard)</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="siard_file">Upload SIARD file</label>
+                        <input type="file" class="form-control-file" id="siard_file" name="siard_file">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Search</button>
+                </form>
+                {% if feedback %}
+                <div class="alert alert-info mt-3">
+                    <p>{{ feedback }}</p>
+                </div>
+                {% endif %}
+                {% if results %}
+                <div class="results mt-4">
+                    <h2>Results:</h2>
+                    <ul class="list-group">
+                        {% for result in results %}
+                        <li class="list-group-item">{{ result }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

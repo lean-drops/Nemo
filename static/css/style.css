@@ -1,0 +1,41 @@
+body {
+    background-color: #f7f9fc;
+    color: #0a74da;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header, .btn-primary {
+    background-color: #0a74da;
+    color: white;
+}
+
+.progress-bar {
+    background-color: #0a74da;
+}
+
+.btn-link {
+    color: #0a74da;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    color: #064a8b;
+    text-decoration: underline;
+}
+
+.collapse {
+    transition: height 0.5s ease;
+}
+
+.modal-header, .modal-footer {
+    background-color: #f7f9fc;
+}
+
+.modal-title {
+    color: #0a74da;
+}
