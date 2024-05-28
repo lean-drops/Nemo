@@ -12,74 +12,13 @@ Logging wird verwendet, um den Verlauf und eventuelle Fehler zu verfolgen.
 
 from flask import Blueprint, render_template, request, jsonify, current_app
 import os
-import zipfile
-import json
-from werkzeug.utils import secure_filename
+from .common import save_uploaded_file, extract_zip_file
 from .extraction import extract_files_in_directory, analyze_structure, read_schemas
 from .analysis import search_files
 from concurrent.futures import ThreadPoolExecutor
 
 search_bp = Blueprint('search_bp', __name__)
 executor = ThreadPoolExecutor(max_workers=4)  # Anpassung der Anzahl der Worker je nach Systemressourcen
-
-UPLOAD_FOLDER = 'uploads'
-
-def save_uploaded_file(file):
-    """
-    Speichert die hochgeladene Datei im Verzeichnis 'uploads'.
-
-    Args:
-        file (werkzeug.datastructures.FileStorage): Die hochgeladene Datei.
-
-    Returns:
-        str: Der Pfad zur gespeicherten Datei.
-    """
-    filename = secure_filename(file.filename)
-    upload_path = os.path.join(UPLOAD_FOLDER, filename)
-    os.makedirs(os.path.dirname(upload_path), exist_ok=True)
-    file.save(upload_path)
-    current_app.logger.debug(f"File saved to: {upload_path}")
-    return upload_path
-
-def extract_zip_file(zip_path, extract_dir):
-    """
-    Extrahiert eine ZIP-Datei in ein angegebenes Verzeichnis und gibt eine Liste der extrahierten TXT-Dateien zurück.
-
-    Args:
-        zip_path (str): Der Pfad zur ZIP-Datei.
-        extract_dir (str): Das Verzeichnis, in das die Dateien extrahiert werden sollen.
-
-    Returns:
-        list: Eine Liste der extrahierten TXT-Dateien.
-    """
-    txt_files = []
-    with zipfile.ZipFile(zip_path, 'r') as zip_file:
-        zip_file.extractall(extract_dir)
-        for file in zip_file.namelist():
-            if file.endswith('.txt'):
-                txt_files.append(os.path.join(extract_dir, file))
-    return txt_files
-
-def extract_files_in_directory(directory, extract_to):
-    """
-    Extrahiert alle ZIP-Dateien in einem Verzeichnis und gibt eine Liste aller extrahierten TXT-Dateien zurück.
-
-    Args:
-        directory (str): Das Verzeichnis, das die ZIP-Dateien enthält.
-        extract_to (str): Das Verzeichnis, in das die Dateien extrahiert werden sollen.
-
-    Returns:
-        list: Eine Liste aller extrahierten TXT-Dateien.
-    """
-    all_txt_files = []
-    for filename in os.listdir(directory):
-        if filename.endswith('.zip'):
-            file_path = os.path.join(directory, filename)
-            extract_path = os.path.join(extract_to, os.path.splitext(filename)[0])
-            os.makedirs(extract_path, exist_ok=True)
-            txt_files = extract_zip_file(file_path, extract_path)
-            all_txt_files.extend(txt_files)
-    return all_txt_files
 
 def extract_file_async(file_path, extract_dir):
     """
@@ -92,14 +31,15 @@ def extract_file_async(file_path, extract_dir):
     Returns:
         list: Eine Liste der extrahierten TXT-Dateien.
     """
-    try:
-        txt_files = extract_zip_file(file_path, extract_dir)
-        current_app.logger.info(f'Successfully extracted file: {file_path}')
-        analyze_and_log_structure(extract_dir)
-        return txt_files
-    except Exception as e:
-        current_app.logger.error(f'Exception during file extraction: {e}')
-        return []
+    with current_app.app_context():
+        try:
+            txt_files = extract_zip_file(file_path, extract_dir)
+            current_app.logger.info(f'Successfully extracted file: {file_path}')
+            analyze_and_log_structure(extract_dir)
+            return txt_files
+        except Exception as e:
+            current_app.logger.error(f'Exception during file extraction: {e}')
+            return []
 
 def extract_directory_async(directory, extract_to):
     """
@@ -112,14 +52,15 @@ def extract_directory_async(directory, extract_to):
     Returns:
         list: Eine Liste der extrahierten TXT-Dateien.
     """
-    try:
-        txt_files = extract_files_in_directory(directory, extract_to)
-        current_app.logger.info(f'Successfully extracted directory: {directory}')
-        analyze_and_log_structure(extract_to)
-        return txt_files
-    except Exception as e:
-        current_app.logger.error(f'Exception during directory extraction: {e}')
-        return []
+    with current_app.app_context():
+        try:
+            txt_files = extract_files_in_directory(directory, extract_to)
+            current_app.logger.info(f'Successfully extracted directory: {directory}')
+            analyze_and_log_structure(extract_to)
+            return txt_files
+        except Exception as e:
+            current_app.logger.error(f'Exception during directory extraction: {e}')
+            return []
 
 def analyze_and_log_structure(extract_dir):
     """
