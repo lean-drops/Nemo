@@ -16,7 +16,7 @@ def create_app():
     """
     Erstellt und konfiguriert die Flask-Anwendung.
 
-    Lädt die Konfiguration aus dem config-Modul, richtet das Logging ein und registriert den Such-Blueprint.
+    Lädt die Konfiguration aus dem config.json-Modul, richtet das Logging ein und registriert den Such-Blueprint.
 
     Returns:
         Flask: Die konfigurierte Flask-Anwendung.
@@ -32,7 +32,7 @@ def create_app():
     error_logger = logging.getLogger('errors')
 
     detailed_logger.debug('Flask application configuration loaded.')
-    detailed_logger.debug(f'Application config: {app.config}')
+    detailed_logger.debug(f'Application config.json: {app.config}')
 
     # Registriere den Blueprint für die Suchfunktionen
     app.register_blueprint(search_bp)

@@ -21,7 +21,7 @@ def create_flask_project():
         'blueprints/search/__init__.py': blueprint_init_py_content(),
         'blueprints/search/routes.py': routes_py_content(),
         'tests/test_routes.py': test_routes_py_content(),
-        'config.py': config_py_content(),
+        'config.json.py': config_py_content(),
         'logs/app.log': ''
     }
 
@@ -39,14 +39,14 @@ def app_py_content():
     return """from flask import Flask
 from blueprints.search.routes import search_bp
 import logging
-from logging.config import dictConfig
-import config
+from logging.config.json import dictConfig
+import config.json
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(config.Config)
+    app.config.json.from_object(config.json.Config)
 
-    dictConfig(app.config['LOGGING'])
+    dictConfig(app.config.json['LOGGING'])
     app.logger.info('Flask application starting...')
 
     app.register_blueprint(search_bp)
@@ -175,7 +175,7 @@ class RoutesTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client()
-        self.app.config['TESTING'] = True
+        self.app.config.json['TESTING'] = True
 
     def test_search_page_loads(self):
         response = self.client.get('/')

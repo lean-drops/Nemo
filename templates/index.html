@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIARD-Suche</title>
+    <title>ZIP-Datei durchsuchen</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
     <div class="container mt-5">
         <div class="card">
             <div class="card-header text-center">
-                <h1>SIARD-Datei durchsuchen</h1>
+                <h1>ZIP-Datei oder Verzeichnis durchsuchen</h1>
             </div>
             <div class="card-body">
                 <!-- Upload Form -->
                 <form id="upload-form" method="post" action="/upload" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="file">SIARD- oder ZIP-Datei hochladen</label>
-                        <input type="file" class="form-control-file" id="file" name="file" required>
+                        <label for="file">ZIP-Datei oder Verzeichnis hochladen</label>
+                        <input type="file" class="form-control-file" id="file" name="file" webkitdirectory directory required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Hochladen</button>
                 </form>
@@ -50,24 +48,8 @@
                                 <input type="text" class="form-control" id="address" name="address" placeholder="Adresse">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-                            </div>
-                            <div class="form-group">
-                                <label for="phone_number">Nummer</label>
-                                <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Telefonnummer">
-                            </div>
-                            <div class="form-group">
                                 <label for="license_plate">Kennzeichen</label>
                                 <input type="text" class="form-control" id="license_plate" name="license_plate" placeholder="Kennzeichen">
-                            </div>
-                            <div class="form-group">
-                                <label for="inspection_date">Datum der Prüfung</label>
-                                <input type="date" class="form-control" id="inspection_date" name="inspection_date" placeholder="Datum der Prüfung">
-                            </div>
-                            <div class="form-group">
-                                <label for="car_model">Auto Marke und Modell</label>
-                                <input type="text" class="form-control" id="car_model" name="car_model" placeholder="Auto Marke und Modell">
                             </div>
                             <div class="form-group">
                                 <label for="birth_date">Geburtstag</label>
@@ -170,5 +152,4 @@
         });
     </script>
 </body>
-
 </html>

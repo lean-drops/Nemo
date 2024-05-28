@@ -1,0 +1,91 @@
+Projektstruktur
+Das Projektverzeichnis ist wie folgt organisiert:
+
+c
+Code kopieren
+/Users/python/Python Projekte/Staatsarchiv/Nemo
+├── app.py
+├── blueprints
+│   └── search
+│       ├── __init__.py
+│       ├── analysis.py
+│       ├── extraction.py
+│       ├── routes.py
+├── config.py
+├── static
+│   └── css
+│       └── style.css
+├── templates
+│   └── index.html
+├── temp_extracted
+├── tests
+│   ├── test.py
+│   ├── test_routes.py
+│   └── test_files
+│       └── *.zip
+└── logs
+    ├── detailed.log
+    ├── important.log
+    └── errors.log
+Dateien und ihre Funktion
+1. app.py
+
+Diese Datei enthält die Hauptkonfiguration und den Startpunkt der Flask-Anwendung. Sie konfiguriert das Logging und registriert den search_bp Blueprint für die Suchfunktionen.
+
+2. blueprints/search
+
+Dieses Verzeichnis enthält den search Blueprint und die zugehörigen Module:
+
+__init__.py: Initialisiert den search Blueprint.
+analysis.py: Beinhaltet die Logik zur Analyse und Suche in den extrahierten TXT-Dateien.
+extraction.py: Enthält die Logik zum Extrahieren von ZIP-Dateien und zur Schema-Analyse der extrahierten Dateien.
+routes.py: Definiert die Routen für die Webanwendung, einschließlich Hochladen, Extrahieren und Suchen.
+3. config.py
+
+Diese Datei enthält die Konfigurationsinformationen der Flask-Anwendung, einschließlich der Logging-Einstellungen und anderer wichtiger Parameter.
+
+4. static/css
+
+style.css: Enthält die CSS-Stile für die Anwendung.
+5. templates
+
+index.html: Das HTML-Template für die Startseite der Anwendung, welches das Upload-Formular und die Suchfunktion enthält.
+6. temp_extracted
+
+Dieses Verzeichnis dient als Zielverzeichnis für die extrahierten Dateien aus den hochgeladenen ZIP-Dateien.
+
+7. tests
+
+Dieses Verzeichnis enthält die Testskripte und Testdateien:
+
+test.py: Skript zum Erstellen von Test-ZIP-Dateien mit TXT-Dateien für die Tests der Extraktions- und Suchfunktionen.
+test_routes.py: Testet die Routen der Anwendung.
+test_files: Enthält die generierten Test-ZIP-Dateien.
+8. logs
+
+Dieses Verzeichnis enthält die Log-Dateien, die während der Laufzeit der Anwendung erstellt werden:
+
+detailed.log: Detaillierte Logs für die Debugging-Zwecke.
+important.log: Logs für wichtige Ereignisse.
+errors.log: Logs für Fehlerereignisse.
+Funktionalität
+Hochladen und Extrahieren
+
+Die Anwendung ermöglicht das Hochladen einer einzelnen ZIP-Datei oder eines Verzeichnisses mit mehreren ZIP-Dateien. Beim Hochladen werden die ZIP-Dateien in ein temporäres Verzeichnis extrahiert, und die Struktur sowie die Schema-Informationen der extrahierten Dateien werden analysiert und protokolliert.
+
+Suche
+
+Die Anwendung unterstützt die Suche nach bestimmten Abfragen in den extrahierten TXT-Dateien. Benutzer können einfache oder detaillierte Suchanfragen stellen, um Daten basierend auf verschiedenen Kriterien zu finden.
+
+Wichtige Module
+routes.py
+
+Dieses Modul definiert die Routen für die Webanwendung und enthält Funktionen für das Hochladen, Extrahieren und Durchsuchen von Dateien. Es protokolliert die Anzahl der hochgeladenen ZIP-Dateien und die Anzahl der TXT-Dateien in jeder ZIP-Datei.
+
+extraction.py
+
+Dieses Modul enthält die Logik zum Extrahieren von ZIP-Dateien und zur Schema-Analyse der extrahierten TXT-Dateien. Es verwendet fuzzywuzzy, um Tippfehler in den Spaltennamen zu korrigieren und sicherzustellen, dass die Daten konsistent sind.
+
+analysis.py
+
+Dieses Modul enthält die Logik zur Analyse und Suche in den extrahierten TXT-Dateien. Es verwendet Pandas, um die Dateien zu lesen und zu durchsuchen, und protokolliert den Fortschritt und die Ergebnisse der Suche.

@@ -1,0 +1,7 @@
+{
+    "base_directory": "/Users/python/Documents/Tests/Test_Siard_Zips",
+    "num_rows_per_file": 100,
+    "num_txt_files_per_zip": 5,
+    "num_zip_files": 17,
+    "log_file": "/Users/python/Documents/Tests/Test_Siard_Zips/logfile.log"
+}
